@@ -31,5 +31,11 @@ void mouseReleased() {
 
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
-  println(e);
+  if(e == 1) {
+    println("run");
+  }
+  
+  if (e == -1) {
+    println("bru");
+  }
 }
