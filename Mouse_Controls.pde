@@ -12,11 +12,11 @@ void mouseDragged() {
       displacement = PVector.sub(initialCoordinates, finalCoordinates);
 
       // Changes the xMin and xMax values when the mouse drags
-      xMin -= displacement.x / graph.spacingXtick * xScale;
-      xMax -= displacement.x / graph.spacingXtick * xScale;
+      xMin -= displacement.x / coordinateAxis.spacingXtick * xScale;
+      xMax -= displacement.x / coordinateAxis.spacingXtick * xScale;
 
-      yMin += displacement.y / graph.spacingYtick * yScale;
-      yMax += displacement.y / graph.spacingYtick * yScale;
+      yMin += displacement.y / coordinateAxis.spacingYtick * yScale;
+      yMax += displacement.y / coordinateAxis.spacingYtick * yScale;
     }
 
     finalCoordinates = initialCoordinates;
@@ -36,12 +36,12 @@ void mouseWheel(MouseEvent event) {
 
   // ZOOM OUT
   if (e == 1) {
-    xMin -= graph.xAxisLength*zoomOutFactor;
-    xMax += graph.xAxisLength*zoomOutFactor;
-    yMin -= graph.yAxisLength*zoomOutFactor;
-    yMax += graph.yAxisLength*zoomOutFactor;
+    xMin -= coordinateAxis.xAxisLength*zoomOutFactor;
+    xMax += coordinateAxis.xAxisLength*zoomOutFactor;
+    yMin -= coordinateAxis.yAxisLength*zoomOutFactor;
+    yMax += coordinateAxis.yAxisLength*zoomOutFactor;
 
-    if (graph.spacingXtick < 60) {
+    if (coordinateAxis.spacingXtick < 60) {
       xScale *= 2;
 
       // Reduces the xScale number to a nice number if it is too large
@@ -57,7 +57,7 @@ void mouseWheel(MouseEvent event) {
       }
     }
 
-    if (graph.spacingYtick < 60) {
+    if (coordinateAxis.spacingYtick < 60) {
       yScale *= 2;
 
       // Reduces the yScale number to a nice number if it is too large
@@ -76,12 +76,12 @@ void mouseWheel(MouseEvent event) {
 
   // ZOOM IN
   else if (e == -1) {
-    xMin += graph.xAxisLength*zoomOutFactor;
-    xMax -= graph.xAxisLength*zoomOutFactor;
-    yMin += graph.yAxisLength*zoomOutFactor;
-    yMax -= graph.yAxisLength*zoomOutFactor;
+    xMin += coordinateAxis.xAxisLength*zoomOutFactor;
+    xMax -= coordinateAxis.xAxisLength*zoomOutFactor;
+    yMin += coordinateAxis.yAxisLength*zoomOutFactor;
+    yMax -= coordinateAxis.yAxisLength*zoomOutFactor;
 
-    if (graph.spacingXtick > 120) {
+    if (coordinateAxis.spacingXtick > 120) {
       xScale /= 2;
 
       // Reduces the xScale number to a nice number if it is too large
@@ -97,7 +97,7 @@ void mouseWheel(MouseEvent event) {
       //}
     }
 
-    if (graph.spacingYtick > 120) {
+    if (coordinateAxis.spacingYtick > 120) {
       yScale /= 2.0;
       //println(yScale);
       

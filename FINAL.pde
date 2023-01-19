@@ -14,7 +14,7 @@ float yMax = 10;
 float yMin = -10;
 float xScale = 1;
 float yScale = 1;
-Graph graph;
+Axis coordinateAxis;
 
 PFont font;
 
@@ -26,7 +26,7 @@ Boolean mouseDown = false;
 
 void setup() {
   size(700, 700);
-  graph = new Graph();
+  coordinateAxis = new Axis();
   
   font = createFont("Arial", 18);
   textFont(font);
@@ -40,5 +40,5 @@ void setup() {
 
 void draw() {
   background(255);
-  graph.drawAxis();
+  coordinateAxis.drawAxis();
 }

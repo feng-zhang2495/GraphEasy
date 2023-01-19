@@ -1,4 +1,4 @@
-class Graph {
+class Axis {
   // FIELDS
   float xAxisLength;
   float yAxisLength;
@@ -7,7 +7,7 @@ class Graph {
   float textPosition;
   
   // CONSTRUCTOR
-  Graph() {
+  Axis() {
     this.xAxisLength = xMax - xMin;
     this.yAxisLength = yMax - yMin;
     this.spacingXtick = width/(this.xAxisLength/xScale);
