@@ -73,7 +73,6 @@ class Graph {
       for(int i = 0; i < (xAxisLength - abs(xMin) / xScale) / xScale + 1; i++) {
         rect(yAxisCoordinate + spacingXtick * i, xAxisCoordinate, 2.3, 5);
         text(str(xScale*i), yAxisCoordinate + spacingXtick * i, xAxisCoordinate);
-        println(yAxisCoordinate);
       }
       
       // DRAWS TICKS TO THE LEFT OF THE ORIGIN
@@ -163,10 +162,6 @@ class Graph {
           text(str(floor(yMax/yScale) * yScale - yScale * (i)), yAxisCoordinate + textPosition, yPositionOfTick);
         }
       }
-    }
-    
+    }  
   }
-    
-  
-  
 }

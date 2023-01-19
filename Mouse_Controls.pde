@@ -3,6 +3,7 @@ void mousePressed() {
   initialCoordinates = new PVector(mouseX, mouseY);
 }
 
+// Moves the coordinate axis around
 void mouseDragged() {
   if (mouseDown == true) {
     if(finalCoordinates != null) {
@@ -21,9 +22,14 @@ void mouseDragged() {
   }
 }
 
-
+// Once the mouse is released, set the initial and final coordinates to null
 void mouseReleased() {
   mouseDown = false;
   initialCoordinates = null;
   finalCoordinates = null;
+}
+
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  println(e);
 }
