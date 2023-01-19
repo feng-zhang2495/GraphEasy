@@ -73,8 +73,6 @@ class Axis {
       for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
         rect(yAxisCoordinate + spacingXtick * i, xAxisCoordinate, 2.3, 5);
         text(str(xScale*i), yAxisCoordinate + spacingXtick * i, xAxisCoordinate);
-        println(xAxisLength);
-        println(xMin / xScale);
       }
       
       // DRAWS TICKS TO THE LEFT OF THE ORIGIN

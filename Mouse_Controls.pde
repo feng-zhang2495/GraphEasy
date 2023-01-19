@@ -31,6 +31,7 @@ void mouseReleased() {
   finalCoordinates = null;
 }
 
+// ZOOM IN / ZOOM OUT
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
 
