@@ -70,13 +70,15 @@ class Graph {
     // If the origin is included in the range of xMin to xMax
     if (xMin < 0 && xMax > 0) {
       // DRAWS TICKS TO THE RIGHT OF THE ORIGIN
-      for(int i = 0; i < (xAxisLength - abs(xMin) / xScale) / xScale + 1; i++) {
+      for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
         rect(yAxisCoordinate + spacingXtick * i, xAxisCoordinate, 2.3, 5);
         text(str(xScale*i), yAxisCoordinate + spacingXtick * i, xAxisCoordinate);
+        println(xAxisLength);
+        println(xMin / xScale);
       }
       
       // DRAWS TICKS TO THE LEFT OF THE ORIGIN
-      for(int i = 0; i < (xAxisLength - abs(xMax) / xScale) / xScale + 1; i++) {
+      for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
         rect(yAxisCoordinate + spacingXtick * -i, xAxisCoordinate, 2.3, 5);
         text(str(xScale * -i), yAxisCoordinate + spacingXtick * -i, xAxisCoordinate);
       }
@@ -121,7 +123,7 @@ class Graph {
     // If the origin is included in the range of yMin and yMax
     if (yMin < 0 && yMax > 0) {
       // DRAWS TICKS ABOVE THE ORIGIN
-      for(int i = 0; i < (yAxisLength - abs(yMin) / yScale) / yScale + 1; i++) {
+      for(int i = 0; i < (yAxisLength / yScale + 1); i++) {
         rect(yAxisCoordinate, xAxisCoordinate + spacingYtick*-i, 5, 2.3);
         
         // Prevents it from drawing 0 twice
@@ -131,7 +133,7 @@ class Graph {
       }
       
       // DRAWS TICKS BELOW THE ORIGIN
-      for(int i = 0; i < (yAxisLength - abs(yMax) / yScale) / yScale + 1; i++) {
+      for(int i = 0; i < (yAxisLength / yScale + 1); i++) {
         rect(yAxisCoordinate, xAxisCoordinate + spacingYtick*i, 5, 2.3);
         
         // Prevents it from drawing 0 twice

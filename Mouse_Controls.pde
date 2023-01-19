@@ -81,36 +81,37 @@ void mouseWheel(MouseEvent event) {
     yMin += graph.yAxisLength*zoomOutFactor;
     yMax -= graph.yAxisLength*zoomOutFactor;
 
-    if (graph.spacingXtick > 60) {
+    if (graph.spacingXtick > 120) {
       xScale /= 2;
 
       // Reduces the xScale number to a nice number if it is too large
-      int x = 0;
-      while (xScale < 10) {
-        xScale *= 10;
-        x++;
+      //int x = 0;
+      //while (xScale < 10) {
+      //  xScale *= 10;
+      //  x++;
 
-        if (xScale > 10) {
-          xScale = int(xScale)*pow(10, -x);
-          break;
-        }
-      }
+      //  if (xScale > 10) {
+      //    xScale = int(xScale)*pow(10, -x);
+      //    break;
+      //  }
+      //}
     }
 
-    if (graph.spacingYtick > 60) {
-      yScale /= 2;
-
+    if (graph.spacingYtick > 120) {
+      yScale /= 2.0;
+      //println(yScale);
+      
       // Reduces the yScale number to a nice number if it is too large
-      int x = 0;
-      while (yScale < 10) {
-        yScale *= 10;
-        x++;
+      //int x = 0;
+      //while (yScale < 10) {
+      //  yScale *= 10;
+      //  x++;
 
-        if (yScale > 10) {
-          yScale = int(yScale)*pow(10, -x);
-          break;
-        }
-      }
+      //  if (yScale > 10) {
+      //    yScale = int(yScale)*pow(10, -x);
+      //    break;
+      //  }
+      //}
     }
   }
 }
