@@ -15,19 +15,20 @@ Graph graph;
 PFont font;
 
 PVector initialCoordinates;
-PVector finalCoordinates = new PVector(1,1,0);
+PVector finalCoordinates;
 PVector displacement;
 
 Boolean mouseDown = false;
 
 void setup() {
-  size(600, 600);
+  size(700, 700);
   graph = new Graph();
   
   font = createFont("Arial", 18);
   textFont(font);
   rectMode(CENTER);
   
+  frameRate(60);
   // Transaltes to (0,0) on the center of the screen
   //translate(width/2, height/2);
   

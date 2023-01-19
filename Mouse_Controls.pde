@@ -5,22 +5,25 @@ void mousePressed() {
 
 void mouseDragged() {
   if (mouseDown == true) {
-    displacement = PVector.sub(initialCoordinates, finalCoordinates);
-    //println(initialCoordinates, finalCoordinates, displacement);
+    if(finalCoordinates != null) {
+      displacement = PVector.sub(initialCoordinates, finalCoordinates);
+      
+      // Changes the xMin and xMax values when the mouse drags
+      xMin -= displacement.x / graph.spacingXtick * xScale;
+      xMax -= displacement.x / graph.spacingXtick * xScale;
+      
+      yMin += displacement.y / graph.spacingYtick * yScale;
+      yMax += displacement.y / graph.spacingYtick * yScale;
+    }
     
     finalCoordinates = initialCoordinates;
     initialCoordinates = new PVector(mouseX, mouseY);
   }
-
-  // Changes the xMin and xMax values when the mouse drag 
-  xMin -= displacement.x / xScale;
-  xMax -= displacement.x / xScale;
-  
-  yMin += displacement.y / yScale;
-  yMax += displacement.y / yScale;
 }
 
 
 void mouseReleased() {
   mouseDown = false;
+  initialCoordinates = null;
+  finalCoordinates = null;
 }
