@@ -8,12 +8,12 @@
 
 //import g4p_controls.*;
 
-float xMax = 150;
-float xMin = -50;
-float yMax = 30;
-float yMin = -20;
-float xScale = 30;
-float yScale = 5;
+float xMax = 10;
+float xMin = -10;
+float yMax = 10;
+float yMin = -10;
+float xScale = 1;
+float yScale = 1;
 Graph graph;
 
 PFont font;

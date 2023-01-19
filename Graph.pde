@@ -10,7 +10,7 @@ class Graph {
   Graph() {
     this.xAxisLength = xMax - xMin;
     this.yAxisLength = yMax - yMin;
-    this.spacingXtick = width/( this.xAxisLength/xScale);
+    this.spacingXtick = width/(this.xAxisLength/xScale);
     this.spacingYtick = height/(this.yAxisLength/yScale);
     this.yAxisCoordinate = abs(xMin)*this.spacingXtick/xScale;
     this.xAxisCoordinate = abs(yMax)*this.spacingYtick/yScale;
