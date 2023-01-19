@@ -47,7 +47,7 @@ void draw() {
 // Checks if a character is an integer 
 boolean isInteger(char c) {
   try {
-    int number = Integer.parseInt(str(c));
+    Integer.parseInt(str(c));
     return true;
   } 
   
@@ -59,7 +59,7 @@ boolean isInteger(char c) {
 // Checks if a string is a number
 boolean isNumber(String c) {
   try {
-    int number = Integer.parseInt(c);
+    Float.parseFloat(c);
     return true;
   } 
   

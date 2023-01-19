@@ -1,4 +1,4 @@
-String test = "1+(2*3-1)-2";
+String test = "4^3+1*2/1.5-5";
 
 
 float shuntingAlgorithm(String equation) {
