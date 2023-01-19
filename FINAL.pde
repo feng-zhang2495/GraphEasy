@@ -25,7 +25,7 @@ PVector displacement;
 Boolean mouseDown = false;
 
 void setup() {
-  shuntingAlgorithm(test);
+  println("ANSWER", shuntingAlgorithm(test));
   size(700, 700);
   coordinateAxis = new Axis();
   
@@ -48,6 +48,18 @@ void draw() {
 boolean isInteger(char c) {
   try {
     int number = Integer.parseInt(str(c));
+    return true;
+  } 
+  
+  catch (Exception e) {
+    return false;
+  }
+}
+
+// Checks if a string is a number
+boolean isNumber(String c) {
+  try {
+    int number = Integer.parseInt(c);
     return true;
   } 
   

@@ -2,12 +2,12 @@ String test = "1+(2*3-1)-2";
 
 
 float shuntingAlgorithm(String equation) {
-  int number;
   boolean isNumber;
   ArrayList<String> outputQueue = new ArrayList<String>();
+  ArrayList<String> evaluationStack = new ArrayList<String>();
   ArrayList<String> operatorStack = new ArrayList<String>();
   
-  // Making a hashmap of priorities for the algorithm to work
+  // Making a hashmap of operator priorities
   HashMap<String, Integer> priorities = new HashMap<String, Integer>(); 
   priorities.put("(", 0);
   priorities.put("[", 0);
@@ -107,8 +107,52 @@ float shuntingAlgorithm(String equation) {
       operatorStack.remove(0);
     }
   }
+  println("FINAL OUTPUT ARRAY", outputQueue);
   
-  println(outputQueue);
+  // Evaluating the reverse polish expression we have in the outputQueue Array 
+  for(int i = 0; i < outputQueue.size(); i++) {
+    println(evaluationStack);
+    
+    String output = outputQueue.get(i);
+    
+    // If the output is a number
+    if(isNumber(output)) {
+      evaluationStack.add(0, output);
+    }
+    
+    // If its an operator 
+    else {
+      // If the evaluationStack size is less than 2, the reverse polish expression must be invalid
+      if(evaluationStack.size() >= 2) {
+        
+        float rightNumber = float(evaluationStack.get(0));
+        evaluationStack.remove(0);
+        float leftNumber = float(evaluationStack.get(0));
+        evaluationStack.remove(0);
+        
+        // Check what type of operation is being performed, and add the number back to the evaluation stack
+        if(output.equals("+")) {
+          evaluationStack.add(0, str(leftNumber + rightNumber));
+        }
+        
+        else if(output.equals("-")) {
+          evaluationStack.add(0, str(leftNumber - rightNumber));
+        }
+        
+        else if(output.equals("*")) {
+          evaluationStack.add(0, str(leftNumber * rightNumber));
+        }
+        
+        else if(output.equals("/")) {
+          evaluationStack.add(0, str(leftNumber / rightNumber));
+        }
+        
+        else if(output.equals("^")) {
+          evaluationStack.add(0, str(pow(leftNumber, rightNumber)));
+        }
+      }
+    }
+  }
   
-  return 0.1;
+  return float(evaluationStack.get(0));
 }
