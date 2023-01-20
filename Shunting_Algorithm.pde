@@ -10,6 +10,8 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   priorities.put("(", 0);
   priorities.put("[", 0);
   priorities.put("sin", 1);
+  priorities.put("cos", 1);
+  priorities.put("tan", 1);
   priorities.put("+", 1);
   priorities.put("-", 1);
   priorities.put("*", 2);
@@ -23,7 +25,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   for (int i = 0; i < equation.size(); i++) {
     String character = equation.get(i);
     
-    
+    println(character);
     
     // If the character isnt just a blank space
     if (!character.equals(" ")) {
@@ -55,15 +57,28 @@ float shuntingAlgorithm(ArrayList<String> equation) {
       }
 
       // IF THE CHARACTER IS PART OF A FUNCTION
-      else if (character.equals("s") || character.equals("s") || character.equals("t")) {
+      else if (character.equals("s") || character.equals("c") || character.equals("t")) {
+        
         // Sine function
         if(character.equals("s") && equation.get(i+1).equals("i") && equation.get(i+2).equals("n")) {
           operatorStack.add(0, "sin");
           i += 2;
         }
+        
+        // Tangent function
+        if(character.equals("t") && equation.get(i+1).equals("a") && equation.get(i+2).equals("n")) {
+          operatorStack.add(0, "tan");
+          i += 2;
+        }
+        
+        // Cosine function
+        if(character.equals("c") && equation.get(i+1).equals("o") && equation.get(i+2).equals("s")) {
+          operatorStack.add(0, "cos");
+          i += 2;
+        }
       }
 
-      // IF THE CHARACTER IS NOT A NUMBER BUT AN OPERATOR OR FUNCTION
+      // IF THE CHARACTER IS NOT A NUMBER OR FUNCTION
       else {
         
         
@@ -153,7 +168,6 @@ float shuntingAlgorithm(ArrayList<String> equation) {
 
         // If the character has equal or lower priority than the one in stack, add it to the output queue
         else {
-          println(priorities.get(character) <= priorities.get(operatorStack.get(0)));
           while (priorities.get(character) <= priorities.get(operatorStack.get(0))) {
             outputQueue.add(operatorStack.get(0));
             operatorStack.remove(0);
@@ -183,8 +197,8 @@ float shuntingAlgorithm(ArrayList<String> equation) {
 
   // Evaluating the postfix expression in the outputQueue Array
   for (int i = 0; i < outputQueue.size(); i++) {
-    println("OUTPUT", outputQueue);
-    println("EVAL", evaluationStack);
+    //println("OUTPUT", outputQueue);
+    //println("EVAL", evaluationStack);
     String output = outputQueue.get(i);
 
     // If the output is a number or a function
@@ -195,12 +209,21 @@ float shuntingAlgorithm(ArrayList<String> equation) {
     // If its an operator
     else {
       
+      // If theres only one item in the evaluationStack array, there must be a function evaluating the number
       if (evaluationStack.size() == 1) {
         float number = float(evaluationStack.get(0));
         evaluationStack.remove(0);
         
         if (output.equals("sin")) {
           evaluationStack.add(0, str(sin(number)));
+        }
+        
+        else if (output.equals("cos")) {
+          evaluationStack.add(0, str(cos(number)));
+        }
+        
+        else if (output.equals("tan")) {
+          evaluationStack.add(0, str(tan(number)));
         }
       }
       
@@ -227,9 +250,14 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         } else if (output.equals("sin")) {
           evaluationStack.add(0, str(sin(rightNumber)));
           evaluationStack.add(0, str(leftNumber));
+        } else if (output.equals("cos")) {
+          evaluationStack.add(0, str(cos(rightNumber)));
+          evaluationStack.add(0, str(leftNumber));
+        } else if (output.equals("tan")) {
+          evaluationStack.add(0, str(tan(rightNumber)));
+          evaluationStack.add(0, str(leftNumber));
         }
-        
-        
+
       }
     }
   }
