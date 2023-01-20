@@ -25,7 +25,6 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   for (int i = 0; i < equation.size(); i++) {
     String character = equation.get(i);
     
-    println(character);
     
     // If the character isnt just a blank space
     if (!character.equals(" ")) {
@@ -199,6 +198,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   for (int i = 0; i < outputQueue.size(); i++) {
     //println("OUTPUT", outputQueue);
     //println("EVAL", evaluationStack);
+    
     String output = outputQueue.get(i);
 
     // If the output is a number or a function
@@ -224,6 +224,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         
         else if (output.equals("tan")) {
           evaluationStack.add(0, str(tan(number)));
+          
         }
       }
       
@@ -248,20 +249,20 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         } else if (output.equals("^")) {
           evaluationStack.add(0, str(pow(leftNumber, rightNumber)));
         } else if (output.equals("sin")) {
+          evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(sin(rightNumber)));
-          evaluationStack.add(0, str(leftNumber));
         } else if (output.equals("cos")) {
+          evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(cos(rightNumber)));
-          evaluationStack.add(0, str(leftNumber));
         } else if (output.equals("tan")) {
-          evaluationStack.add(0, str(tan(rightNumber)));
           evaluationStack.add(0, str(leftNumber));
+          evaluationStack.add(0, str(tan(rightNumber)));
         }
 
       }
     }
   }
   
-  
+  println("FINAL ANSWER", evaluationStack);
   return float(evaluationStack.get(0));
 }

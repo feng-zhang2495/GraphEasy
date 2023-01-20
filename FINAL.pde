@@ -9,7 +9,7 @@
 
 //import g4p_controls.*;
 
-String equation = "tan((sinx)/x)";
+String equation = "3*sin((x^3)/(x^2+10))";
 
 float xMax = 5;
 float xMin = -5;
