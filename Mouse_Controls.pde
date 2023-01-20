@@ -36,83 +36,84 @@ void mouseWheel(MouseEvent event) {
   float e = event.getCount();
 
   // ZOOM OUT
-  if (e == 1) {
-    xMin -= coordinateAxis.xAxisLength*zoomOutFactor;
-    xMax += coordinateAxis.xAxisLength*zoomOutFactor;
-    yMin -= coordinateAxis.yAxisLength*zoomOutFactor;
-    yMax += coordinateAxis.yAxisLength*zoomOutFactor;
-
-    if (coordinateAxis.spacingXtick < 60) {
-      xScale *= 2;
-
-      // Reduces the xScale number to a nice number if it is too large
-      int x = 0;
-      while (xScale > 10) {
-        xScale /= 10;
-        x++;
-
-        if (xScale < 10) {
-          xScale = int(xScale)*pow(10, x);
-          break;
-        }
-      }
-    }
-
-    if (coordinateAxis.spacingYtick < 60) {
-      yScale *= 2;
-
-      // Reduces the yScale number to a nice number if it is too large
-      int x = 0;
-      while (yScale > 10) {
-        yScale /= 10;
-        x++;
-
-        if (yScale < 10) {
-          yScale = int(yScale)*pow(10, x);
-          break;
-        }
-      }
-    }
-  }
+  if (e == 1) 
+    zoomOut();
+  
 
   // ZOOM IN
   else if (e == -1) {
-    xMin += coordinateAxis.xAxisLength*zoomOutFactor;
-    xMax -= coordinateAxis.xAxisLength*zoomOutFactor;
-    yMin += coordinateAxis.yAxisLength*zoomOutFactor;
-    yMax -= coordinateAxis.yAxisLength*zoomOutFactor;
+    zoomIn();
+  }
+}
 
-    if (coordinateAxis.spacingXtick > 120) {
-      xScale /= 2;
-
-      // Reduces the xScale number to a nice number if it is too large
-      //int x = 0;
-      //while (xScale < 10) {
-      //  xScale *= 10;
-      //  x++;
-
-      //  if (xScale > 10) {
-      //    xScale = int(xScale)*pow(10, -x);
-      //    break;
-      //  }
-      //}
+// Function that is called with key pressed 
+void keyPressed() {
+  if(key == CODED) {
+    
+    // ZOOM OUT
+    if(keyCode == SHIFT) {
+      zoomOut();
     }
+    
+    // ZOOM IN
+    else if(keyCode == CONTROL) {
+      zoomIn();
+    }
+  }
+}
 
-    if (coordinateAxis.spacingYtick > 120) {
-      yScale /= 2.0;
-      //println(yScale);
-      
-      // Reduces the yScale number to a nice number if it is too large
-      //int x = 0;
-      //while (yScale < 10) {
-      //  yScale *= 10;
-      //  x++;
+// Zoom In Function
+void zoomIn() {
+  xMin += coordinateAxis.xAxisLength*zoomOutFactor;
+  xMax -= coordinateAxis.xAxisLength*zoomOutFactor;
+  yMin += coordinateAxis.yAxisLength*zoomOutFactor;
+  yMax -= coordinateAxis.yAxisLength*zoomOutFactor;
 
-      //  if (yScale > 10) {
-      //    yScale = int(yScale)*pow(10, -x);
-      //    break;
-      //  }
-      //}
+  if (coordinateAxis.spacingXtick > 120) {
+    xScale /= 2;
+  }
+
+  if (coordinateAxis.spacingYtick > 120) {
+    yScale /= 2.0;
+  }
+}
+
+// Zoom Out function
+void zoomOut() {
+  xMin -= coordinateAxis.xAxisLength*zoomOutFactor;
+  xMax += coordinateAxis.xAxisLength*zoomOutFactor;
+  yMin -= coordinateAxis.yAxisLength*zoomOutFactor;
+  yMax += coordinateAxis.yAxisLength*zoomOutFactor;
+
+  if (coordinateAxis.spacingXtick < 60) {
+    xScale *= 2;
+
+    // Reduces the xScale number to a nice number if it is too large
+    int x = 0;
+    while (xScale > 10) {
+      xScale /= 10;
+      x++;
+
+      if (xScale < 10) {
+        xScale = int(xScale)*pow(10, x);
+        break;
+      }
+    }
+  }
+  
+  if (coordinateAxis.spacingYtick < 60) {
+    yScale *= 2;
+
+    // Reduces the yScale number to a nice number if it is too large
+    int x = 0;
+    while (yScale > 10) {
+      yScale /= 10;
+      x++;
+
+      if (yScale < 10) {
+        yScale = int(yScale)*pow(10, x);
+        break;
+      }
     }
   }
 }

@@ -8,13 +8,17 @@
 
 //import g4p_controls.*;
 
+String equation = "x^2 + 2x + 5";
+
 float xMax = 10;
 float xMin = -10;
 float yMax = 10;
 float yMin = -10;
 float xScale = 1;
 float yScale = 1;
+
 Axis coordinateAxis;
+Graph graph;
 
 PFont font;
 
@@ -24,10 +28,16 @@ PVector displacement;
 
 Boolean mouseDown = false;
 
+
+
 void setup() {
-  println("ANSWER", shuntingAlgorithm(test));
+  //println("ANSWER", shuntingAlgorithm(test));
   size(700, 700);
+  
   coordinateAxis = new Axis();
+  graph = new Graph(equation);
+  
+  graph.drawGraph();
   
   font = createFont("Arial", 18);
   textFont(font);

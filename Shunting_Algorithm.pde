@@ -1,6 +1,6 @@
-String test = "4^3+1*2/1.5-5";
+String test = "-2*(3+(1+3)/(2+2))";
 
-
+// Implementation of the shunting algorithm
 float shuntingAlgorithm(String equation) {
   boolean isNumber;
   ArrayList<String> outputQueue = new ArrayList<String>();
@@ -46,14 +46,34 @@ float shuntingAlgorithm(String equation) {
         // Add the whole number to the output queue
         outputQueue.add(equation.substring(i, pos));
         i = pos-1;
-        println("output:", outputQueue);
       }
       
-      // If the character is not a number, but an operator or function
+      
+      // IF THE CHARACTER IS NOT A NUMBER BUT AN OPERATOR OR FUNCTION
       else {
         
+        // This is the case where there is negative number in the equation
+        if((character == '-' && i == 0) || (isInteger(equation.charAt(i-1)) == false) && character == '-') {
+          int pos = i+1;
+                    
+          // If the next character is still a number or a decimal character, continue to the next character
+          while(isInteger(equation.charAt(pos)) || equation.charAt(pos) == '.') {
+            pos++;
+            
+            if(pos == equation.length()) {
+              break;
+            }
+          }
+          
+          // Add the whole number to the output queue
+          outputQueue.add(equation.substring(i, pos));
+          i = pos-1;
+        }
+        
         // If the operator is a left parenthesis, always add it to the operator stack
-        if(priorities.get(str(character)) == 0) {
+        
+        
+        else if(priorities.get(str(character)) == 0) {
           operatorStack.add(0, str(character));
         }
         
@@ -63,7 +83,7 @@ float shuntingAlgorithm(String equation) {
         
         // If the character is a right bracket, pop all the operators into the output queue up to the left bracket
         else if(priorities.get(str(character)) == priorities.get(")")) {
-          while  (priorities.get(operatorStack.get(0)) != 0) {
+          while(priorities.get(operatorStack.get(0)) != 0) {
             
             outputQueue.add(operatorStack.get(0));
             operatorStack.remove(0);
@@ -94,7 +114,6 @@ float shuntingAlgorithm(String equation) {
           }
           operatorStack.add(0, str(character));
         }
-        println(operatorStack);
       }
     }
   }
@@ -111,7 +130,6 @@ float shuntingAlgorithm(String equation) {
   
   // Evaluating the reverse polish expression we have in the outputQueue Array 
   for(int i = 0; i < outputQueue.size(); i++) {
-    println(evaluationStack);
     
     String output = outputQueue.get(i);
     
