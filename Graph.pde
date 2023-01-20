@@ -5,8 +5,8 @@ class Graph {
   ArrayList<String> parsedEquation;
   ArrayList<Point> points;
   // Hash map that stores the values of the previously parsed equations to avoid parsing the same x-value multiple times. 
-  private HashMap<Float, ArrayList<String>> previousParsedEquations = new HashMap<>();
-  private HashMap<Float, Float> graphCoordinates = new HashMap<>();
+  private HashMap<Float, ArrayList<String>> previousParsedEquations = new HashMap<Float, ArrayList<String>>();
+  private HashMap<Float, Float> graphCoordinates = new HashMap<Float, Float>();
   
   
   // CONSTRUCTOR
@@ -31,10 +31,31 @@ class Graph {
     pushMatrix();
     translate(coordinateAxis.yAxisCoordinate, coordinateAxis.xAxisCoordinate);
     
+    // Adjusts the coordinate if yAxisCoordinate and xAxisCoordinate is NOT on the origin (0,0)
+    float adjustmentx = 0;
+    float adjustmenty = 0;
+    
+    // If the coordinate axis is off the origin (0,0)
+    if(xMin > 0) {
+      adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
+    }
+    
+    else if (xMax < 0) {
+      adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
+    }
+    
+    if(yMin > 0) {
+      adjustmenty = yMin * coordinateAxis.spacingYtick / yScale;
+    }
+    
+    else if (yMax < 0) {
+      adjustmenty = yMax *coordinateAxis.spacingYtick / yScale;
+    }
+    
     // Draws the points on the screen
     for (int i = 0; i < points.size(); i++) {
-      float xCoordinate = points.get(i).coordinates.x * coordinateAxis.spacingXtick / xScale;
-      float yCoordinate = -points.get(i).coordinates.y * coordinateAxis.spacingYtick / yScale;
+      float xCoordinate = points.get(i).coordinates.x * coordinateAxis.spacingXtick / xScale - adjustmentx;
+      float yCoordinate = -points.get(i).coordinates.y * coordinateAxis.spacingYtick / yScale + adjustmenty;
       circle(xCoordinate, yCoordinate, 5);
     }
     popMatrix();
@@ -87,13 +108,23 @@ class Graph {
                   parsedEquation.add(i+1, str(xValue));
                 }
                 
+                
                 // If there is just a negative sign in front of the x
-                if (parsedEquation.get(i-1).equals("-") && isNumber(parsedEquation.get(i-2)) == false) {
-                  parsedEquation.add(i-1, "-1");
-                  parsedEquation.add(i, "*");
-                  parsedEquation.add(i+1, str(xValue));
+                if (parsedEquation.get(i-1).equals("-")) {
+                  //if (i == 1) {
+                  //  parsedEquation.add(i-1, "-1");
+                  //  parsedEquation.add(i, "*");
+                  //  parsedEquation.add(i+1, str(xValue));
+                  //} 
                   
-                }
+                  if (isNumber(parsedEquation.get(i-2)) == false) {
+                    parsedEquation.remove(i-1);
+                    parsedEquation.add(i-1, "-1");
+                    parsedEquation.add(i, "*");
+                    parsedEquation.add(i+1, str(xValue));
+                  }
+                } 
+              
                 
                 // If there are no exceptions
                 else {
@@ -134,19 +165,35 @@ class Graph {
                   parsedEquation.add(0, output);
                   i = pos-1;
                 }
+                
+                // If the next character is x, for example -x
+                if (parsedEquation.get(i+1).equals("x")) {
+
+                  parsedEquation.remove(i);
+                  parsedEquation.remove(i);
+                  parsedEquation.add(i, "-1");
+                  parsedEquation.add(i+1, "*");
+                  parsedEquation.add(i+2, str(xValue));
+                  i = i + 2;
+                }
               }
             }
             previousParsedEquations.put(xValue, parsedEquation);
           }
         }
+        println("PARSED EQUATION", parsedEquation);
         yValue = shuntingAlgorithm(parsedEquation);
         graphCoordinates.put(xValue, yValue);
       }
       
            
-      //println("PARSED EQUATION", parsedEquation);
+      
       Point point = new Point(new PVector(xValue, yValue));
       points.add(point);
     }   
+  }
+  
+  void drawLabel() {
+    text("y = " + equation, 20, 20);
   }
 }

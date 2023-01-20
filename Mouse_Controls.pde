@@ -55,11 +55,13 @@ void keyPressed() {
     
     // ZOOM OUT
     if(keyCode == SHIFT) {
+      graphChanged = true;
       zoomOut();
     }
     
     // ZOOM IN
     else if(keyCode == CONTROL) {
+      graphChanged = true;
       zoomIn();
     }
   }

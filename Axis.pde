@@ -91,7 +91,7 @@ class Axis {
           
           float xPositionOfTick = yAxisCoordinate + (ceil(xMin/xScale) * xScale - xMin)/xScale * spacingXtick + spacingXtick*i;
           rect(xPositionOfTick, xAxisCoordinate, 2.3, 5);
-          text(str(ceil(xMin/xScale) * xScale * (i+1)), xPositionOfTick, xAxisCoordinate);
+          text(str(ceil(xMin/xScale) * xScale + xScale * i), xPositionOfTick, xAxisCoordinate);
         }
       }
       

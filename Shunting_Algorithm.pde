@@ -12,6 +12,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   priorities.put("sin", 1);
   priorities.put("cos", 1);
   priorities.put("tan", 1);
+  priorities.put("sqrt", 1);
   priorities.put("+", 1);
   priorities.put("-", 1);
   priorities.put("*", 2);
@@ -75,11 +76,16 @@ float shuntingAlgorithm(ArrayList<String> equation) {
           operatorStack.add(0, "cos");
           i += 2;
         }
+        
+        // Square Root function
+        if(character.equals("s") && equation.get(i+1).equals("q") && equation.get(i+2).equals("r") && equation.get(i+3).equals("t")) {
+          operatorStack.add(0, "sqrt");
+          i += 3;
+        }
       }
 
       // IF THE CHARACTER IS NOT A NUMBER OR FUNCTION
       else {
-        
         
         // The case where a negative symbol does not represent subtraction, but rather a negative number
         if (character == "-") {
@@ -191,7 +197,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
       operatorStack.remove(0);
     }
   }
-  //println("FINAL OUTPUT ARRAY", outputQueue);
+  println("FINAL OUTPUT ARRAY", outputQueue);
   //println("FINAL OPERATOR STACK", operatorStack);
 
   // Evaluating the postfix expression in the outputQueue Array
@@ -224,7 +230,10 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         
         else if (output.equals("tan")) {
           evaluationStack.add(0, str(tan(number)));
-          
+        }
+        
+        else if (output.equals("sqrt")) {
+          evaluationStack.add(0, str(sqrt(number)));
         }
       }
       
@@ -251,18 +260,26 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         } else if (output.equals("sin")) {
           evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(sin(rightNumber)));
-        } else if (output.equals("cos")) {
+        } 
+        else if (output.equals("cos")) {
           evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(cos(rightNumber)));
-        } else if (output.equals("tan")) {
+        } 
+        
+        else if (output.equals("tan")) {
           evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(tan(rightNumber)));
-        }
+        } 
+        
+        else if (output.equals("sqrt")) {
+          evaluationStack.add(0, str(leftNumber));
+          evaluationStack.add(0, str(sqrt(rightNumber)));
+        } 
 
       }
     }
   }
   
-  println("FINAL ANSWER", evaluationStack);
+  //println("FINAL ANSWER", evaluationStack);
   return float(evaluationStack.get(0));
 }
