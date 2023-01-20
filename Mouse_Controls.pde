@@ -7,6 +7,8 @@ void mousePressed() {
 
 // Moves the coordinate axis around
 void mouseDragged() {
+  graphChanged = true;
+  
   if (mouseDown == true) {
     if (finalCoordinates != null) {
       displacement = PVector.sub(initialCoordinates, finalCoordinates);
@@ -33,6 +35,7 @@ void mouseReleased() {
 
 // ZOOM IN / ZOOM OUT
 void mouseWheel(MouseEvent event) {
+  graphChanged = true;
   float e = event.getCount();
 
   // ZOOM OUT
@@ -71,12 +74,26 @@ void zoomIn() {
 
   if (coordinateAxis.spacingXtick > 120) {
     xScale /= 2;
+    
+    //// Gets rid of the decimals on the xScale number when it is really small
+    //if (xScale < 1) {
+    //  for(int i = 0; i < str(xScale).length(); i++) {
+    //    if (str(xScale).charAt(i) != '0' && i+2 < str(xScale).length()) {
+    //      xScale = float(str(xScale).substring(0, i+2));
+    //    }
+    //  }
+    //}
+    
   }
 
   if (coordinateAxis.spacingYtick > 120) {
-    yScale /= 2.0;
+    yScale /= 2;
+    
+    // Gets rid of the decimals on the yScale number when it is really small
+    
   }
 }
+
 
 // Zoom Out function
 void zoomOut() {
