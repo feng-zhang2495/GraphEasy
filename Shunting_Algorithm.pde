@@ -26,7 +26,6 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   for (int i = 0; i < equation.size(); i++) {
     String character = equation.get(i);
     
-    
     // If the character isnt just a blank space
     if (!character.equals(" ")) {
 
@@ -90,7 +89,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         // The case where a negative symbol does not represent subtraction, but rather a negative number
         if (character == "-") {
         
-          if (i == 0) {
+          if (i == 0 && isNumber(equation.get(i+1))) {
             int pos = i+1;
 
             // If the next character is still a number or a decimal character, continue to the next character
@@ -145,7 +144,6 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         }
 
         // If the character is a left parenthesis, always add it to the operator stack
-        
         else if (priorities.get(character) == 0) {
           operatorStack.add(0, character);
         }
@@ -197,13 +195,12 @@ float shuntingAlgorithm(ArrayList<String> equation) {
       operatorStack.remove(0);
     }
   }
-  println("FINAL OUTPUT ARRAY", outputQueue);
+  //println("FINAL OUTPUT ARRAY", outputQueue);
   //println("FINAL OPERATOR STACK", operatorStack);
 
   // Evaluating the postfix expression in the outputQueue Array
   for (int i = 0; i < outputQueue.size(); i++) {
     //println("OUTPUT", outputQueue);
-    //println("EVAL", evaluationStack);
     
     String output = outputQueue.get(i);
 
@@ -244,7 +241,6 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         evaluationStack.remove(0);
         float leftNumber = float(evaluationStack.get(0));
         evaluationStack.remove(0);
-        //println(output);
         
         // Check what type of operation is being performed, and add the number back to the evaluation stack
         if (output.equals("+")) {

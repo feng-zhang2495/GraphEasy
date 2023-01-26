@@ -2,12 +2,13 @@ float zoomOutFactor = 0.025;
 
 void mousePressed() {
   mouseDown = true;
+  graphClicked = true;
   initialCoordinates = new PVector(mouseX, mouseY);
 }
 
 // Moves the coordinate axis around
 void mouseDragged() {
-  graphChanged = true;
+  graphClicked = false;
   
   if (mouseDown == true) {
     if (finalCoordinates != null) {
@@ -19,11 +20,31 @@ void mouseDragged() {
 
       yMin += displacement.y / coordinateAxis.spacingYtick * yScale;
       yMax += displacement.y / coordinateAxis.spacingYtick * yScale;
+      
+      // If the tangent is locked to the screen, make sure the tangent stays at the same spot on the graph
+      if (tangentLocked) {
+        
+        float adjustmentx = 0;
+        
+        // If the coordinate axis is off the origin (0,0)
+        if(xMin > 0) {
+          adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
+        }
+        
+        else if (xMax < 0) {
+          adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
+        }
+    
+        graph.xCoordinateGraph1 -= displacement.x / coordinateAxis.spacingXtick * xScale - adjustmentx;
+        graph.xCoordinateGraph2 -= displacement.x / coordinateAxis.spacingXtick * xScale - adjustmentx;
+      }
     }
 
     finalCoordinates = initialCoordinates;
     initialCoordinates = new PVector(mouseX, mouseY);
   }
+  
+  
 }
 
 // Once the mouse is released, set the initial and final coordinates to null
@@ -31,11 +52,16 @@ void mouseReleased() {
   mouseDown = false;
   initialCoordinates = null;
   finalCoordinates = null;
+  
+  // If the user just clicked the graph to lock the tangent line in place
+  if (graphClicked == true) {
+    graphClicked = false;
+    tangentLocked = !tangentLocked;
+  }
 }
 
 // ZOOM IN / ZOOM OUT
 void mouseWheel(MouseEvent event) {
-  graphChanged = true;
   float e = event.getCount();
 
   // ZOOM OUT
@@ -55,13 +81,11 @@ void keyPressed() {
     
     // ZOOM OUT
     if(keyCode == SHIFT) {
-      graphChanged = true;
       zoomOut();
     }
     
     // ZOOM IN
     else if(keyCode == CONTROL) {
-      graphChanged = true;
       zoomIn();
     }
   }
