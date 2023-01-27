@@ -48,7 +48,6 @@ Boolean mouseDown = false;
 Boolean graphClicked = false;
 boolean tangentLocked = false; 
 
-float test = 0.000239018313;
 
 void setup() {
   size(600, 600);

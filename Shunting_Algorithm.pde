@@ -58,29 +58,32 @@ float shuntingAlgorithm(ArrayList<String> equation) {
       // IF THE CHARACTER IS PART OF A FUNCTION
       else if (character.equals("s") || character.equals("c") || character.equals("t")) {
         
-        // Sine function
-        if(character.equals("s") && equation.get(i+1).equals("i") && equation.get(i+2).equals("n")) {
-          operatorStack.add(0, "sin");
-          i += 2;
-        }
+        //try {
+          // Sine function
+          if(character.equals("s") && equation.get(i+1).equals("i") && equation.get(i+2).equals("n")) {
+            operatorStack.add(0, "sin");
+            i += 2;
+          }
+          
+          // Tangent function
+          if(character.equals("t") && equation.get(i+1).equals("a") && equation.get(i+2).equals("n")) {
+            operatorStack.add(0, "tan");
+            i += 2;
+          }
+          
+          // Cosine function
+          if(character.equals("c") && equation.get(i+1).equals("o") && equation.get(i+2).equals("s")) {
+            operatorStack.add(0, "cos");
+            i += 2;
+          }
+          
+          // Square Root function
+          if(character.equals("s") && equation.get(i+1).equals("q") && equation.get(i+2).equals("r") && equation.get(i+3).equals("t")) {
+            operatorStack.add(0, "sqrt");
+            i += 3;
+          }
+        //} catch (Exception e) {}
         
-        // Tangent function
-        if(character.equals("t") && equation.get(i+1).equals("a") && equation.get(i+2).equals("n")) {
-          operatorStack.add(0, "tan");
-          i += 2;
-        }
-        
-        // Cosine function
-        if(character.equals("c") && equation.get(i+1).equals("o") && equation.get(i+2).equals("s")) {
-          operatorStack.add(0, "cos");
-          i += 2;
-        }
-        
-        // Square Root function
-        if(character.equals("s") && equation.get(i+1).equals("q") && equation.get(i+2).equals("r") && equation.get(i+3).equals("t")) {
-          operatorStack.add(0, "sqrt");
-          i += 3;
-        }
       }
 
       // IF THE CHARACTER IS NOT A NUMBER OR FUNCTION
@@ -277,5 +280,10 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   }
   
   //println("FINAL ANSWER", evaluationStack);
-  return float(evaluationStack.get(0));
+  try {
+    return float(evaluationStack.get(0));
+  } catch (Exception e) {
+    return 0;
+  }
+  
 }
