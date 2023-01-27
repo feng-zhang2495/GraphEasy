@@ -21,20 +21,9 @@ void mouseDragged() {
       yMin += displacement.y / coordinateAxis.spacingYtick * yScale;
       yMax += displacement.y / coordinateAxis.spacingYtick * yScale;
       
+      
       // If the tangent is locked to the screen, make sure the tangent stays at the same spot on the graph
       if (tangentLocked) {
-        
-        float adjustmentx = 0;
-        
-        // If the coordinate axis is off the origin (0,0)
-        if(xMin > 0) {
-          adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
-        }
-        
-        else if (xMax < 0) {
-          adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
-        }
-    
         graph.xCoordinateGraph1 -= displacement.x / coordinateAxis.spacingXtick * xScale - adjustmentx;
         graph.xCoordinateGraph2 -= displacement.x / coordinateAxis.spacingXtick * xScale - adjustmentx;
       }

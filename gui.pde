@@ -20,8 +20,8 @@ synchronized public void win_draw1(PApplet appc, GWinData data) { //_CODE_:windo
 
 public void equationFieldChanged(GTextField source, GEvent event) { //_CODE_:equationField:202076:
   println("equationField - GTextField >> GEvent." + event + " @ " + millis());
-  equation = equationField.getText();
-  graph = new Graph(equation);
+  //equation = equationField.getText();
+  //graph = new Graph(equation);
 } //_CODE_:equationField:202076:
 
 public void xMinFieldChanged(GTextField source, GEvent event) { //_CODE_:xMinField:825895:

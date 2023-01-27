@@ -36,3 +36,24 @@ float roundFloat(float n, int decimalPlaces) {
   
   return n;
 }
+
+
+// Updates the adjustmentx and adjustmenty coordinates which are responsible for shifting the origin point of the coordinate axis
+// Thia makes sure that points are drawn on the right places on screen
+void updateAdjustment() {
+  if(xMin > 0) {
+    adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
+  }
+  
+  else if (xMax < 0) {
+    adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
+  }
+  
+  if(yMin > 0) {
+    adjustmenty = yMin * coordinateAxis.spacingYtick / yScale;
+  }
+  
+  else if (yMax < 0) {
+    adjustmenty = yMax * coordinateAxis.spacingYtick / yScale;
+  }
+}

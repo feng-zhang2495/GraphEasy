@@ -35,14 +35,11 @@ class Graph {
   
   // METHODS
   void drawGraph() {
-    // Displays the coordinates of where the mouse currently is
-    displayMousePosition();
-    
     // Calculates the spacing between each of the points
-    float s = abs(xMax-xMin)/width;
+    float s = abs(xMax-xMin) / (width/3);
     
-    // Goes through j width amount of times
-    for(int j = 0; j < width; j++) {
+    // Finds width / 4 number of coordinate pairs 
+    for(int j = 0; j < width/3; j++) {
       
       // The x-coordinate of the current point 
       float xValue = xMin+s*j;
@@ -50,27 +47,6 @@ class Graph {
       // Adds the coordinate pair to the points arrayList
       points.add(new PVector(xValue, parseEquation(xValue)));
     }   
-    
-    // Adjusts the coordinate if yAxisCoordinate and xAxisCoordinate is NOT on the origin (0,0)
-    float adjustmentx = 0;
-    float adjustmenty = 0;
-    
-    // If the coordinate axis is off the origin (0,0)
-    if(xMin > 0) {
-      adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
-    }
-    
-    else if (xMax < 0) {
-      adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
-    }
-    
-    if(yMin > 0) {
-      adjustmenty = yMin * coordinateAxis.spacingYtick / yScale;
-    }
-    
-    else if (yMax < 0) {
-      adjustmenty = yMax *coordinateAxis.spacingYtick / yScale;
-    }
     
     // Draws the points on the screen
     for (int i = 1; i < points.size(); i++) {
@@ -81,7 +57,11 @@ class Graph {
       
       stroke(0);
       strokeWeight(5);
-      line(pointX1, pointY1, pointX2, pointY2);
+      
+      // Only draw the line if the line isn't a asymptote. 
+      if (abs(pointY1 - pointY2) < 10000) {
+        line(pointX1, pointY1, pointX2, pointY2);
+      }
     }
     
     points = new ArrayList<PVector>();
@@ -217,6 +197,7 @@ class Graph {
   
   // Draws the equation of the graph
   void drawLabel() {
+    textAlign(TOP, CENTER);
     text("y = " + equation, 20, 20);
   }
   
@@ -235,32 +216,8 @@ class Graph {
     //}
     
     //println("EQUATION OF TANGENT", str(slope) + operation +str(b));
-    
-    
-    
-    
+
     stroke(255, 0, 0);
-    
-     // Adjusts the coordinate if yAxisCoordinate and xAxisCoordinate is NOT on the origin (0,0)
-    float adjustmentx = 0;
-    float adjustmenty = 0;
-    
-    // If the coordinate axis is off the origin (0,0)
-    if(xMin > 0) {
-      adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
-    }
-    
-    else if (xMax < 0) {
-      adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
-    }
-    
-    if(yMin > 0) {
-      adjustmenty = yMin * coordinateAxis.spacingYtick / yScale;
-    }
-    
-    else if (yMax < 0) {
-      adjustmenty = yMax *coordinateAxis.spacingYtick / yScale;
-    }
     
     // If the tangent is not locked, update the values of the graph
     if (tangentLocked == false) {
@@ -283,13 +240,11 @@ class Graph {
     
     // Draws the tangent line
     line(xCoordinateGraph1, yCoordinateGraph1, xCoordinateGraph2, yCoordinateGraph2);
-    
-    //Graph tangent = new Graph(str(slope) + operation +str(b));
-    //tangent.drawGraph();
   }
   
   
   void displayMousePosition() {
+    textAlign(TOP, CENTER);
     String output = "(" + str(mouseCoordinateX1) + ", " + str(yCoordinate1) + ")";
     text(output, 15, height-15);    
   }

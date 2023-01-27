@@ -26,7 +26,7 @@
 
 import g4p_controls.*;
 
-String equation = "-2*cos((x^3)/(x^2+10))";  //  -2*cos((x^3)/(x^2+10))
+String equation = "(x^2-5)/(x-1)";  //  -2*cos((x^3)/(x^2+10))
 
 float xMax = 5;
 float xMin = -5;
@@ -34,6 +34,8 @@ float yMax = 5;
 float yMin = -5;
 float xScale = 1;
 float yScale = 1;
+float adjustmenty = 0;
+float adjustmentx = 0;
 
 Axis coordinateAxis;
 Graph graph;
@@ -65,8 +67,11 @@ void setup() {
 
 void draw() {
   background(255);
+  
   coordinateAxis.drawAxis();
   graph.drawGraph();
   graph.drawDerivative();
   graph.drawLabel();
+  graph.displayMousePosition();
+  updateAdjustment();
 }
