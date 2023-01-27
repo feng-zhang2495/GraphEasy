@@ -3,7 +3,7 @@ class Graph {
   String equation;
   ArrayList<String> equationCopy;
   ArrayList<String> parsedEquation;
-  ArrayList<Point> points;
+  ArrayList<PVector> points;
   float yCoordinateGraph1;
   float yCoordinateGraph2;
   float xCoordinateGraph1;
@@ -30,7 +30,7 @@ class Graph {
         equationCopy.add(str(equation.charAt(i)));
     }
     
-    points = new ArrayList<Point>();
+    points = new ArrayList<PVector>();
   }
   
   // METHODS
@@ -46,12 +46,10 @@ class Graph {
       
       // The x-coordinate of the current point 
       float xValue = xMin+s*j;
-      parseEquation(xValue);
+      
+      // Adds the coordinate pair to the points arrayList
+      points.add(new PVector(xValue, parseEquation(xValue)));
     }   
-    
-    
-    pushMatrix();
-    translate(coordinateAxis.yAxisCoordinate, coordinateAxis.xAxisCoordinate);
     
     // Adjusts the coordinate if yAxisCoordinate and xAxisCoordinate is NOT on the origin (0,0)
     float adjustmentx = 0;
@@ -75,15 +73,20 @@ class Graph {
     }
     
     // Draws the points on the screen
-    for (int i = 0; i < points.size(); i++) {
-      float xCoordinate = points.get(i).coordinates.x * coordinateAxis.spacingXtick / xScale - adjustmentx;
-      float yCoordinate = -points.get(i).coordinates.y * coordinateAxis.spacingYtick / yScale + adjustmenty;
-      circle(xCoordinate, yCoordinate, 5);
+    for (int i = 1; i < points.size(); i++) {
+      float pointX1 = coordinateAxis.yAxisCoordinate + points.get(i).x * coordinateAxis.spacingXtick / xScale - adjustmentx;
+      float pointY1 = coordinateAxis.xAxisCoordinate - points.get(i).y * coordinateAxis.spacingYtick / yScale + adjustmenty;
+      float pointX2 = coordinateAxis.yAxisCoordinate + points.get(i-1).x * coordinateAxis.spacingXtick / xScale - adjustmentx;
+      float pointY2 = coordinateAxis.xAxisCoordinate - points.get(i-1).y * coordinateAxis.spacingYtick / yScale + adjustmenty;
+      
+      stroke(0);
+      strokeWeight(5);
+      line(pointX1, pointY1, pointX2, pointY2);
     }
-    popMatrix();
     
-    points = new ArrayList<Point>();
+    points = new ArrayList<PVector>();
   }
+  
   
   // Parses the equation by replacing the variable x with numbers in the range of xMin to xMax
   float parseEquation(float xValue) {
@@ -209,9 +212,6 @@ class Graph {
       graphCoordinates.put(xValue, yValue);
     }
     
-    Point point = new Point(new PVector(xValue, yValue));
-    points.add(point);
-    
     return yValue;
   }
   
@@ -276,16 +276,13 @@ class Graph {
     // The y intercept of the line
     float b = yCoordinate1 - slope*mouseCoordinateX1;    
     
-    yCoordinateGraph1 = slope*xMin + b;
-    yCoordinateGraph2 = slope*xMax + b;
-    xCoordinateGraph1 = xMin * coordinateAxis.spacingXtick / xScale - adjustmentx;
-    xCoordinateGraph2 = xMax * coordinateAxis.spacingXtick / xScale - adjustmentx;
+    yCoordinateGraph1 = coordinateAxis.xAxisCoordinate - (slope*xMin + b) * coordinateAxis.spacingYtick / yScale + adjustmenty;
+    yCoordinateGraph2 = coordinateAxis.xAxisCoordinate - (slope*xMax + b) * coordinateAxis.spacingYtick / yScale + adjustmenty;
+    xCoordinateGraph1 = coordinateAxis.yAxisCoordinate + xMin * coordinateAxis.spacingXtick / xScale - adjustmentx;
+    xCoordinateGraph2 = coordinateAxis.yAxisCoordinate + xMax * coordinateAxis.spacingXtick / xScale - adjustmentx;
     
     // Draws the tangent line
-    pushMatrix();
-    translate(coordinateAxis.yAxisCoordinate, coordinateAxis.xAxisCoordinate);
-    line(xCoordinateGraph1, -yCoordinateGraph1 * coordinateAxis.spacingYtick / yScale + adjustmenty, xCoordinateGraph2, -yCoordinateGraph2 * coordinateAxis.spacingYtick / yScale + adjustmenty);
-    popMatrix();
+    line(xCoordinateGraph1, yCoordinateGraph1, xCoordinateGraph2, yCoordinateGraph2);
     
     //Graph tangent = new Graph(str(slope) + operation +str(b));
     //tangent.drawGraph();
