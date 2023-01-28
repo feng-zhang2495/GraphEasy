@@ -160,7 +160,7 @@ void convertToPostfix(ArrayList<String> equation) {
             operatorStack.remove(0);
 
             // Prevents a null pointer exception
-            if (operatorStack.size() == 0) {
+            if (operatorStack.size() == 1) {
               break;
             }
           }

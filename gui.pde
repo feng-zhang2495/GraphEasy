@@ -233,7 +233,7 @@ public void createGUI(){
   yScaleField.setOpaque(true);
   yScaleField.addEventHandler(this, "yScaleFieldChanged");
   submitButton = new GButton(window1, 210, 80, 170, 30);
-  submitButton.setText("Submit");
+  submitButton.setText("Graph");
   submitButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   submitButton.addEventHandler(this, "submitButtonClicked");
   titleLabel = new GLabel(window1, 20, 20, 170, 90);
