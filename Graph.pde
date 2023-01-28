@@ -298,9 +298,9 @@ class Graph {
     textAlign(TOP, CENTER);
     String outputEquation = "Tangent: y = " + nf(slope, 0, 2) + operation + nf(yInterceptOfTangent, 0, 2);
     fill(0);
-    text(outputEquation,  width - 200, 20);
+    text(outputEquation,  width - 220, 20);
     
     // Draws the slope below the equation
-    text("Slope: m = " + nf(slope, 0, 2), width-200, 40); 
+    text("Slope: m = " + nf(slope, 0, 2), width-220, 40); 
   }
 }

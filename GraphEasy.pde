@@ -49,7 +49,7 @@ HashMap<String, Integer> priorities = new HashMap<String, Integer>();  // Making
 // Initializes classes and sets up the program
 void setup() {
   size(600, 600);
-  frameRate(60);
+  frameRate(30);
   priorityFile = loadStrings("priorities.txt");
   
   // SETS UP THE GUI
