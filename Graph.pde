@@ -226,11 +226,30 @@ class Graph {
   }
 
 
-  // Draws the equation of the graph
-  void drawLabel() {
+  // Draws the labels on screen
+  void drawLabels() {
+    
+    // Draws the equation of the graph
     fill(255, 0, 0);
     textAlign(TOP, CENTER);
     text("y = " + equation, 20, 20);
+    
+    // Operation is used for formatting, to avoid a case such as y = 5x*+-4.
+    String operation;
+    if(yInterceptOfTangent >= 0) {
+      operation = "x+";
+    }
+
+    else {
+      operation = "x";
+    }
+    
+    // Formats the output equation nicely and draws it on screen
+    String outputEquation = "Tangent: y = " + nf(slope, 0, 2) + operation + nf(yInterceptOfTangent, 0, 2);
+    text(outputEquation,  20, 40);
+    
+    // Draws the slope below the equation
+    text("Slope: m = " + nf(slope, 0, 2), 20, 60); 
   }
 
 
@@ -266,9 +285,6 @@ class Graph {
     // Draws a small red circle at the point of the graph the tangent line is on
     fill(255, 0, 0);
     circle((mouseCoordinateX1 - xMin) / xScale * coordinateAxis.spacingXtick, coordinateAxis.yCoordXAxis - yCoordinate1 * coordinateAxis.spacingYtick / yScale + adjustmenty, 5);
-    
-    // Displays the slope and the equation of the tangent line
-    displaySlopeAndEquation();
   }
 
   
@@ -278,29 +294,5 @@ class Graph {
     fill(0);
     String output = "(" + str(mouseCoordinateX1) + ", " + str(yCoordinate1) + ")";
     text(output, 15, height-15);
-  }
-  
-  
-  // Displays the slope and the equation of the tangent line on the screen
-  void displaySlopeAndEquation() {
-    
-    // Operation is used for formatting, to avoid a case such as y = 5x*+-4.
-    String operation;
-    if(yInterceptOfTangent >= 0) {
-      operation = "x+";
-    }
-
-    else {
-      operation = "x";
-    }
-    
-    // Formats the output equation nicely and draws it on screen
-    textAlign(TOP, CENTER);
-    String outputEquation = "Tangent: y = " + nf(slope, 0, 2) + operation + nf(yInterceptOfTangent, 0, 2);
-    fill(0);
-    text(outputEquation,  width - 220, 20);
-    
-    // Draws the slope below the equation
-    text("Slope: m = " + nf(slope, 0, 2), width-220, 40); 
   }
 }

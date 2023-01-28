@@ -43,6 +43,7 @@ Boolean updatingValues = false;
 Boolean updatingGraph = false;
 
 String[] priorityFile;
+String[] errorFile;
 HashMap<String, Integer> priorities = new HashMap<String, Integer>();  // Making a hashmap of operator priorities
 
 
@@ -51,6 +52,7 @@ void setup() {
   size(600, 600);
   frameRate(30);
   priorityFile = loadStrings("priorities.txt");
+  errorFile = loadStrings("Error Messages.txt");
   
   // SETS UP THE GUI
   createGUI();
@@ -66,14 +68,7 @@ void setup() {
   textFont(font);
   rectMode(CENTER);
   
-  // Reads the priorities from the priorities.txt and puts them into the priorities hashmap for the shunting algorithm
-  for (int i = 0 ; i < priorityFile.length; i++) {
-    String[] parts = priorityFile[i].split(",");
-    
-    String operator = parts[0];
-    int priority = int(float(parts[1]));    
-    priorities.put(operator, priority);
-  }
+  loadFiles();
 }
 
 
@@ -86,7 +81,7 @@ void draw() {
   // Draws the graph, its tangent line and the labels on screen
   graph.drawGraph();
   graph.drawTangentLine();
-  graph.drawLabel();
+  graph.drawLabels();
   graph.displayMousePosition();
   
   // Updates the adjustment global variables

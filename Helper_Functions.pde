@@ -118,6 +118,10 @@ void setSettingsForGUI() {
   // SETS THE TEXT SIZE AND COLORS FOR THE SETTINGS LABEL
   settingsLabel.setFont(titleFont);
   settingsLabel.setLocalColorScheme(6);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE ERRORS LABEL
+  errorLabel.setFont(labelFont);
+  errorLabel.setLocalColorScheme(5);
 }
 
 
@@ -134,4 +138,16 @@ void resetGraph() {
   graph = new Graph(equation);
   
   updateGUIvalues();
+}
+
+
+void loadFiles() {
+  // Reads the priorities from the priorities.txt and puts them into the priorities hashmap for the shunting algorithm
+  for (int i = 0 ; i < priorityFile.length; i++) {
+    String[] parts = priorityFile[i].split(",");
+    
+    String operator = parts[0];
+    int priority = int(float(parts[1]));    
+    priorities.put(operator, priority);
+  }
 }

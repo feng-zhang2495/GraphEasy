@@ -103,20 +103,22 @@ public void submitButtonClicked(GButton source, GEvent event) { //_CODE_:submitB
       temporaryGraph.drawGraph();
       equation = newEquation;
       graph = new Graph(equation);
+      errorLabel.setText("Version 1.0");
       updatingGraph = false;
     } 
     
+    // If there is an error, don't update the actual graph in our program
     catch (Exception e) {
-      // If there is an error, don't update the actual graph in our program
-      equationField.setText(equation);
+      equationField.setText("0");
+      equation = "0";
+      graph = new Graph(equation);
+      errorLabel.setText(errorFile[round(random(errorFile.length-1))]);
       updatingGraph = false;
     }
   }
   
 } //_CODE_:submitButton:933242:
 
-
-// DEMO 1
 public void demo1Clicked(GButton source, GEvent event) { //_CODE_:demo1:219283:
   println("demo1 - GButton >> GEvent." + event + " @ " + millis());
   
@@ -124,11 +126,10 @@ public void demo1Clicked(GButton source, GEvent event) { //_CODE_:demo1:219283:
   resetGraph();
   equation = demo_1;
   graph = new Graph(equation);
+  errorLabel.setText("Version 1.0");
   updateGUIvalues();
 } //_CODE_:demo1:219283:
 
-
-// DEMO 2
 public void demo2Clicked(GButton source, GEvent event) { //_CODE_:demo2:483934:
   println("demo2 - GButton >> GEvent." + event + " @ " + millis());
   
@@ -136,11 +137,10 @@ public void demo2Clicked(GButton source, GEvent event) { //_CODE_:demo2:483934:
   resetGraph();
   equation = demo_2;
   graph = new Graph(equation);
+  errorLabel.setText("Version 1.0");
   updateGUIvalues();
 } //_CODE_:demo2:483934:
 
-
-// DEMO 3
 public void demo3Clicked(GButton source, GEvent event) { //_CODE_:demo3:474741:
   println("demo3 - GButton >> GEvent." + event + " @ " + millis());
   
@@ -148,25 +148,20 @@ public void demo3Clicked(GButton source, GEvent event) { //_CODE_:demo3:474741:
   resetGraph();
   equation = demo_3;
   graph = new Graph(equation);
+  errorLabel.setText("Version 1.0");
   updateGUIvalues();
 } //_CODE_:demo3:474741:
 
-
-// ZOOM IN
 public void zoomInButtonClicked(GButton source, GEvent event) { //_CODE_:zoomInButton:426427:
   println("zoomInButton - GButton >> GEvent." + event + " @ " + millis());
   zoomIn();
 } //_CODE_:zoomInButton:426427:
 
-
-// ZOOM OUT
 public void zoomOutButtonClicked(GButton source, GEvent event) { //_CODE_:zoomOutButton:350300:
   println("zoomOutButton - GButton >> GEvent." + event + " @ " + millis());
   zoomOut();
 } //_CODE_:zoomOutButton:350300:
 
-
-// RESET
 public void resetButtonClicked(GButton source, GEvent event) { //_CODE_:resetButton:681550:
   println("resetButton - GButton >> GEvent." + event + " @ " + millis());
   resetGraph();
@@ -181,7 +176,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setMouseOverEnabled(false);
   surface.setTitle("Sketch Window");
-  window1 = GWindow.getWindow(this, "Window title", 0, 0, 400, 380, JAVA2D);
+  window1 = GWindow.getWindow(this, "Window title", 0, 0, 400, 430, JAVA2D);
   window1.noLoop();
   window1.setActionOnClose(G4P.KEEP_OPEN);
   window1.addDrawHandler(this, "win_draw1");
@@ -268,6 +263,10 @@ public void createGUI(){
   resetButton.setText("Reset ");
   resetButton.setLocalColorScheme(GCScheme.RED_SCHEME);
   resetButton.addEventHandler(this, "resetButtonClicked");
+  errorLabel = new GLabel(window1, 20, 370, 360, 40);
+  errorLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  errorLabel.setText("Version 1.0");
+  errorLabel.setOpaque(true);
   window1.loop();
 }
 
@@ -297,3 +296,4 @@ GButton demo3;
 GButton zoomInButton; 
 GButton zoomOutButton; 
 GButton resetButton; 
+GLabel errorLabel; 

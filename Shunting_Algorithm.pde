@@ -3,13 +3,13 @@ ArrayList<String> evaluationStack = new ArrayList<String>();
 ArrayList<String> operatorStack = new ArrayList<String>();
 
 // Implementation of the shunting algorithm
-float shuntingAlgorithm(ArrayList<String> equation) {
+float shuntingAlgorithm(ArrayList<String> equationArray) {
   outputQueue = new ArrayList<String>();
   evaluationStack = new ArrayList<String>();
   operatorStack = new ArrayList<String>();
 
   // Converting the equation to postfix, and evaluating the postfix expression
-  convertToPostfix(equation);
+  convertToPostfix(equationArray);
   evaluatePostfixExpression();
   
   
@@ -20,7 +20,10 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   
   // If an error occurs, there is a problem with the inputted equation
   catch (Exception e) {
-    println("Your equation is causing an error");
+    equationField.setText("0");
+    equation = "0";
+    graph = new Graph(equation);
+    errorLabel.setText(errorFile[round(random(errorFile.length-1))]);
     return 0;
   }
 }
@@ -192,11 +195,23 @@ void convertToPostfix(ArrayList<String> equation) {
   
   // If there are still characters left in the operatorStack array
   if (operatorStack.size() != 0) {
+    int size = operatorStack.size();
     
     // Append them to the output array
-    for (int i = 0; i < operatorStack.size()+1; i++) {
-      outputQueue.add(operatorStack.get(0));
-      operatorStack.remove(0);
+    for (int i = 0; i < size; i++) {
+      
+      // There is sometimes an error when the user tries to do an expression x--8, this try catch statement prevents the program from crashing
+      try {
+        outputQueue.add(operatorStack.get(0));
+        operatorStack.remove(0);
+      } 
+      
+      catch (Exception e) {
+        equationField.setText("0");
+        graph = new Graph("0");
+        errorLabel.setText(errorFile[round(random(errorFile.length-1))]);
+        updatingGraph = false;
+      }
     }
   }
 }
