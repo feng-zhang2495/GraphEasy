@@ -83,7 +83,7 @@ public void yScaleFieldChanged(GTextField source, GEvent event) { //_CODE_:yScal
   // Makes sure the input is a valid number and value for xScale
   if (isNumber(yScaleField.getText())) {
     if (float(yScaleField.getText()) > 0) {
-      yScale = float(xScaleField.getText());    
+      yScale = float(yScaleField.getText());    
     }
   }
 } //_CODE_:yScaleField:359421:
