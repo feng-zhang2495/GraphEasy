@@ -15,12 +15,11 @@ void mouseDragged() {
       displacement = PVector.sub(initialCoordinates, finalCoordinates);
 
       // Changes the xMin and xMax values when the mouse drags
-      xMin -= displacement.x / coordinateAxis.spacingXtick * xScale;
-      xMax -= displacement.x / coordinateAxis.spacingXtick * xScale;
+      xMin -= (displacement.x / coordinateAxis.spacingXtick * xScale);
+      xMax -= (displacement.x / coordinateAxis.spacingXtick * xScale);
 
       yMin += displacement.y / coordinateAxis.spacingYtick * yScale;
       yMax += displacement.y / coordinateAxis.spacingYtick * yScale;
-      
       
       // If the tangent is locked to the screen, make sure the tangent stays at the same spot on the graph
       if (tangentLocked) {
@@ -32,8 +31,6 @@ void mouseDragged() {
     finalCoordinates = initialCoordinates;
     initialCoordinates = new PVector(mouseX, mouseY);
   }
-  
-  
 }
 
 // Once the mouse is released, set the initial and final coordinates to null
@@ -47,6 +44,9 @@ void mouseReleased() {
     graphClicked = false;
     tangentLocked = !tangentLocked;
   }
+  
+  // Update the GUI values
+  updateGUIvalues();
 }
 
 // ZOOM IN / ZOOM OUT
@@ -98,7 +98,6 @@ void zoomIn() {
     //    }
     //  }
     //}
-    
   }
 
   if (coordinateAxis.spacingYtick > 120) {
@@ -107,6 +106,9 @@ void zoomIn() {
     // Gets rid of the decimals on the yScale number when it is really small
     
   }
+  
+  // Updates the GUI values
+  updateGUIvalues();
 }
 
 
@@ -147,5 +149,8 @@ void zoomOut() {
         break;
       }
     }
-  }
+  }  
+  
+  // Updates the GUI values
+  updateGUIvalues();
 }

@@ -72,13 +72,21 @@ class Axis {
       // DRAWS TICKS TO THE RIGHT OF THE ORIGIN
       for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
         rect(yAxisCoordinate + spacingXtick * i, xAxisCoordinate, 2.3, 5);
-        text(str(xScale*i), yAxisCoordinate + spacingXtick * i, xAxisCoordinate);
+        
+        // Prevents it from drawing 0
+        if(i != 0) {
+          text(str(xScale*i), yAxisCoordinate + spacingXtick * i, xAxisCoordinate);
+        }
       }
       
       // DRAWS TICKS TO THE LEFT OF THE ORIGIN
       for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
         rect(yAxisCoordinate + spacingXtick * -i, xAxisCoordinate, 2.3, 5);
-        text(str(xScale * -i), yAxisCoordinate + spacingXtick * -i, xAxisCoordinate);
+        
+        // Prevents it from drawing 0
+        if(i != 0) {
+          text(str(xScale * -i), yAxisCoordinate + spacingXtick * -i, xAxisCoordinate);
+        }
       }
     }
     
@@ -91,7 +99,11 @@ class Axis {
           
           float xPositionOfTick = yAxisCoordinate + (ceil(xMin/xScale) * xScale - xMin)/xScale * spacingXtick + spacingXtick*i;
           rect(xPositionOfTick, xAxisCoordinate, 2.3, 5);
-          text(str(ceil(xMin/xScale) * xScale + xScale * i), xPositionOfTick, xAxisCoordinate);
+          
+          // Prevents it from drawing 0
+          if(ceil(xMin/xScale) != 0) {
+            text(str(ceil(xMin/xScale) * xScale + xScale * i), xPositionOfTick, xAxisCoordinate);
+          }
         }
       }
       
@@ -101,7 +113,11 @@ class Axis {
           
           float xPositionOfTick = yAxisCoordinate - (ceil(abs(xMax)/xScale) * xScale - abs(xMax))/xScale * spacingXtick + spacingXtick*-i;
           rect(xPositionOfTick, xAxisCoordinate, 2.3, 5);
-          text(str(floor(xMax/xScale)* xScale + xScale * -i), xPositionOfTick, xAxisCoordinate);
+          
+          // Prevents it from drawing 0
+          if(floor(xMax/xScale) != 0) {
+            text(str(floor(xMax/xScale) * xScale + xScale * -i), xPositionOfTick, xAxisCoordinate);
+          }
         }
       }
     }
@@ -134,7 +150,7 @@ class Axis {
       for(int i = 0; i < (yAxisLength / yScale + 1); i++) {
         rect(yAxisCoordinate, xAxisCoordinate + spacingYtick*i, 5, 2.3);
         
-        // Prevents it from drawing 0 twice
+        // Prevents it from drawing 0
         if(yScale * i != 0) {
           text(str(yScale * -i), yAxisCoordinate + textPosition, xAxisCoordinate + spacingYtick*i);
         }

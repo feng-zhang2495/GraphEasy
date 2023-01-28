@@ -25,6 +25,9 @@
 
 
 import g4p_controls.*;
+import java.awt.Font;
+
+PApplet pa;
 
 String equation = "(x^2-5)/(x-1)";  //  -2*cos((x^3)/(x^2+10))
 
@@ -42,6 +45,9 @@ Graph graph;
 
 PFont font;
 
+Font titleFont = new Font("Serif", Font.PLAIN, 24);
+Font labelFont = new Font("Serif", Font.PLAIN, 16);
+
 PVector initialCoordinates;
 PVector finalCoordinates;
 PVector displacement;
@@ -49,6 +55,8 @@ PVector displacement;
 Boolean mouseDown = false;
 Boolean graphClicked = false;
 boolean tangentLocked = false; 
+Boolean updatingValues = false;
+Boolean updatingGraph = false;
 
 
 void setup() {
@@ -61,8 +69,11 @@ void setup() {
   textFont(font);
   rectMode(CENTER);
   
-  frameRate(30);
+  frameRate(60);
   createGUI();
+  updateGUIvalues();
+  equationField.setText(equation);
+  setSettingsForGUI();
 }
 
 void draw() {
@@ -70,8 +81,10 @@ void draw() {
   
   coordinateAxis.drawAxis();
   graph.drawGraph();
-  graph.drawDerivative();
+  graph.drawTangentLine();
   graph.drawLabel();
   graph.displayMousePosition();
   updateAdjustment();
+  
+  
 }

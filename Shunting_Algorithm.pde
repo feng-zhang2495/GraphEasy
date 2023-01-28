@@ -283,6 +283,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   try {
     return float(evaluationStack.get(0));
   } catch (Exception e) {
+    println("Your equation is causing an error");
     return 0;
   }
   

@@ -48,7 +48,7 @@ class Graph {
       points.add(new PVector(xValue, parseEquation(xValue)));
     }   
     
-    // Draws the points on the screen
+    // Draws graph on the screen
     for (int i = 1; i < points.size(); i++) {
       float pointX1 = coordinateAxis.yAxisCoordinate + points.get(i).x * coordinateAxis.spacingXtick / xScale - adjustmentx;
       float pointY1 = coordinateAxis.xAxisCoordinate - points.get(i).y * coordinateAxis.spacingYtick / yScale + adjustmenty;
@@ -58,10 +58,16 @@ class Graph {
       stroke(0);
       strokeWeight(5);
       
-      // Only draw the line if the line isn't a asymptote. 
-      if (abs(pointY1 - pointY2) < 10000) {
+      // Only draw the line if the line isn't a asymptote
+      if (abs(pointY1 - pointY2) < pow(10, 4)) {
+        fill(0);
         line(pointX1, pointY1, pointX2, pointY2);
       }
+      
+      //else {
+      //  strokeWeight(3);
+      //  line(pointX1, 0, pointX1, height);
+      //}
     }
     
     points = new ArrayList<PVector>();
@@ -197,13 +203,14 @@ class Graph {
   
   // Draws the equation of the graph
   void drawLabel() {
+    fill(0);
     textAlign(TOP, CENTER);
     text("y = " + equation, 20, 20);
   }
   
   
   // Draws the derivative at the xCoordinate of the mouse 
-  void drawDerivative() {
+  void drawTangentLine() {
     
     
     // Changes the output string to avoid errors such as 4*x+-5
@@ -224,7 +231,7 @@ class Graph {
       slope = (yCoordinate2 - yCoordinate1) / (mouseCoordinateX2 - mouseCoordinateX1);
       // Gets the xCoordinate of wherever your mouse is 
       mouseCoordinateX1 = mouseX * xScale / coordinateAxis.spacingXtick + xMin;
-      mouseCoordinateX2 = (mouseX + 3) * xScale / coordinateAxis.spacingXtick + xMin;
+      mouseCoordinateX2 = (mouseX + 1) * xScale / coordinateAxis.spacingXtick + xMin;
       
       yCoordinate1 = parseEquation(mouseCoordinateX1);
       yCoordinate2 = parseEquation(mouseCoordinateX2);
@@ -239,12 +246,18 @@ class Graph {
     xCoordinateGraph2 = coordinateAxis.yAxisCoordinate + xMax * coordinateAxis.spacingXtick / xScale - adjustmentx;
     
     // Draws the tangent line
+    strokeWeight(3);
     line(xCoordinateGraph1, yCoordinateGraph1, xCoordinateGraph2, yCoordinateGraph2);
+    
+    // Draws a small red circle at the point of the graph the tangent line is on
+    fill(255, 0, 0);
+    circle((mouseCoordinateX1 - xMin) / xScale * coordinateAxis.spacingXtick, coordinateAxis.xAxisCoordinate - yCoordinate1 * coordinateAxis.spacingYtick / yScale + adjustmenty, 5);
   }
   
   
   void displayMousePosition() {
     textAlign(TOP, CENTER);
+    fill(0);
     String output = "(" + str(mouseCoordinateX1) + ", " + str(yCoordinate1) + ")";
     text(output, 15, height-15);    
   }

@@ -13,34 +13,22 @@ boolean isNumber(String c) {
 
 // Rounds float numbers 
 float roundFloat(float n, int decimalPlaces) {
-  int iterations = 0;
-
-  // If the number is greater than 0
-  if(n > 1) {
-    // Round to the desired number of decimal places and convert the number back 
-    n = round(n*pow(10, decimalPlaces)) / pow(10, decimalPlaces);
-  }
-  
-  // If the number is less than 0
-  else {
+    n = abs(n);
     
-    // While the number is less than 1, multiply it by 10
-    while(n < 1) {
-      iterations++;
-      n *= 10;
-    }
+    // Determine the number of decimal places in the input number
+    int decimalCount = (int)(n * pow(10, decimalPlaces)) % (int)pow(10, decimalPlaces);
     
-    // Round to the desired number of decimal places and convert the number back
-    n = round(n*pow(10, decimalPlaces)) / pow(10, iterations + decimalPlaces);
-  }
-  
-  return n;
+    // Round the number to the desired number of decimal places
+    n = (float)((int)(n * pow(10, decimalPlaces + decimalCount)) / pow(10, decimalCount));
+    return n;
 }
 
 
-// Updates the adjustmentx and adjustmenty coordinates which are responsible for shifting the origin point of the coordinate axis
-// Thia makes sure that points are drawn on the right places on screen
+// Updates the adjustmentx and adjustmenty variables which are responsible for shifting the origin point of the coordinate axis
+// This makes sure that points are drawn on the right places on screen
 void updateAdjustment() {
+  
+  // Updates adjustmentx
   if(xMin > 0) {
     adjustmentx = xMin * coordinateAxis.spacingXtick / xScale;
   }
@@ -49,6 +37,11 @@ void updateAdjustment() {
     adjustmentx = xMax * coordinateAxis.spacingXtick / xScale;
   }
   
+  else {
+    adjustmentx = 0;
+  }
+  
+  // Updates adjustmenty
   if(yMin > 0) {
     adjustmenty = yMin * coordinateAxis.spacingYtick / yScale;
   }
@@ -56,4 +49,89 @@ void updateAdjustment() {
   else if (yMax < 0) {
     adjustmenty = yMax * coordinateAxis.spacingYtick / yScale;
   }
+  
+  else {
+    adjustmenty = 0;
+  }
+}
+
+
+// Converts a point from the scale of the window to the scale of coordinate axis
+//void convertPoint(float point) {
+//  return point * coordinateAxis.spacingXtick / xScale;
+//}
+
+
+// Updates the values on the GUI
+void updateGUIvalues() {
+  
+  // Makes sure this function is only running once at a time to prevent a g4p error
+  if(updatingValues == false) {
+    updatingValues = true;
+    
+    // Prevents a concurrent modification error
+    try {
+      // Sets the xMin, xMax, yMin, and yMax text fields whenever the user drags the graph
+      xMinField.setText(str(xMin));
+      xMaxField.setText(str(xMax));
+      yMinField.setText(str(yMin));
+      yMaxField.setText(str(yMax));
+      
+      xScaleField.setText(str(xScale));
+      yScaleField.setText(str(yScale));
+    } 
+    
+    catch (Exception e) {
+      //println(e);
+    }
+
+    updatingValues = false;
+  }
+}
+
+
+// Updates the text size and colors on the GUI
+void setSettingsForGUI() {
+  // SETS THE TEXT SIZE AND COLORS FOR THE TITLE
+  titleLabel.setFont(titleFont);
+  titleLabel.setLocalColorScheme(2);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE EQUATION
+  equationLabel.setFont(labelFont);
+  equationLabel.setLocalColorScheme(5);
+  equationField.setFont(labelFont);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE BUTTON
+  submitButton.setFont(labelFont);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE Y MIN & MAX 
+  yMinLabel.setFont(labelFont);
+  yMinLabel.setLocalColorScheme(5);
+  yMinField.setFont(labelFont);
+  
+  yMaxLabel.setFont(labelFont);
+  yMaxLabel.setLocalColorScheme(5);
+  yMaxField.setFont(labelFont);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE X MIN & MAX 
+  xMinLabel.setFont(labelFont);
+  xMinLabel.setLocalColorScheme(5);
+  xMinField.setFont(labelFont);
+  
+  xMaxLabel.setFont(labelFont);
+  xMaxLabel.setLocalColorScheme(5);
+  xMaxField.setFont(labelFont);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE XSCALE AND YSCALE 
+  xScaleLabel.setFont(labelFont);
+  xScaleLabel.setLocalColorScheme(5);
+  xScaleField.setFont(labelFont);
+  
+  yScaleLabel.setFont(labelFont);
+  yScaleLabel.setLocalColorScheme(5);
+  yScaleField.setFont(labelFont);
+  
+  // SETS THE TEXT SIZE AND COLORS FOR THE SETTINGS LABEL
+  settingsLabel.setFont(titleFont);
+  settingsLabel.setLocalColorScheme(6);
 }
