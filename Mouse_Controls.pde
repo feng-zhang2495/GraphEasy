@@ -1,23 +1,26 @@
-float zoomOutFactor = 0.025;
+float zoomOutFactor = 0.025; // How much the screen zooms in and out
 
+// When the mouse is clicked
 void mousePressed() {
   mouseDown = true;
   graphClicked = true;
   initialCoordinates = new PVector(mouseX, mouseY);
 }
 
+
 // Moves the coordinate axis around
 void mouseDragged() {
   graphClicked = false;
   
-  if (mouseDown == true) {
+  if (mouseDown) {
     if (finalCoordinates != null) {
+      // Find the difference in the initial and final coordinates of your mouse drag
       displacement = PVector.sub(initialCoordinates, finalCoordinates);
-
+  
       // Changes the xMin and xMax values when the mouse drags
       xMin -= (displacement.x / coordinateAxis.spacingXtick * xScale);
       xMax -= (displacement.x / coordinateAxis.spacingXtick * xScale);
-
+  
       yMin += displacement.y / coordinateAxis.spacingYtick * yScale;
       yMax += displacement.y / coordinateAxis.spacingYtick * yScale;
       
@@ -27,11 +30,13 @@ void mouseDragged() {
         graph.xCoordinateGraph2 -= displacement.x / coordinateAxis.spacingXtick * xScale - adjustmentx;
       }
     }
-
+    
+    // Sets the final coordinates to the original coordinates
     finalCoordinates = initialCoordinates;
     initialCoordinates = new PVector(mouseX, mouseY);
   }
 }
+
 
 // Once the mouse is released, set the initial and final coordinates to null
 void mouseReleased() {
@@ -49,6 +54,7 @@ void mouseReleased() {
   updateGUIvalues();
 }
 
+
 // ZOOM IN / ZOOM OUT
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
@@ -64,7 +70,7 @@ void mouseWheel(MouseEvent event) {
   }
 }
 
-// Function that is called with key pressed 
+// Function that is called with key presse
 void keyPressed() {
   if(key == CODED) {
     
@@ -80,31 +86,22 @@ void keyPressed() {
   }
 }
 
+
 // Zoom In Function
 void zoomIn() {
+  // Zooms the graph in
   xMin += coordinateAxis.xAxisLength*zoomOutFactor;
   xMax -= coordinateAxis.xAxisLength*zoomOutFactor;
   yMin += coordinateAxis.yAxisLength*zoomOutFactor;
   yMax -= coordinateAxis.yAxisLength*zoomOutFactor;
-
+  
+  // Make the scale smaller as you zoom in
   if (coordinateAxis.spacingXtick > 120) {
     xScale /= 2;
-    
-    //// Gets rid of the decimals on the xScale number when it is really small
-    //if (xScale < 1) {
-    //  for(int i = 0; i < str(xScale).length(); i++) {
-    //    if (str(xScale).charAt(i) != '0' && i+2 < str(xScale).length()) {
-    //      xScale = float(str(xScale).substring(0, i+2));
-    //    }
-    //  }
-    //}
   }
 
   if (coordinateAxis.spacingYtick > 120) {
-    yScale /= 2;
-    
-    // Gets rid of the decimals on the yScale number when it is really small
-    
+    yScale /= 2;    
   }
   
   // Updates the GUI values
@@ -114,11 +111,13 @@ void zoomIn() {
 
 // Zoom Out function
 void zoomOut() {
+  // Zooms the graph outwards
   xMin -= coordinateAxis.xAxisLength*zoomOutFactor;
   xMax += coordinateAxis.xAxisLength*zoomOutFactor;
   yMin -= coordinateAxis.yAxisLength*zoomOutFactor;
   yMax += coordinateAxis.yAxisLength*zoomOutFactor;
-
+  
+  // Make the scale larger as you zoom out 
   if (coordinateAxis.spacingXtick < 60) {
     xScale *= 2;
 
@@ -135,6 +134,7 @@ void zoomOut() {
     }
   }
   
+  // Make the scale larger as you zoom out 
   if (coordinateAxis.spacingYtick < 60) {
     yScale *= 2;
 

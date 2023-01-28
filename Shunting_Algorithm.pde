@@ -1,42 +1,46 @@
+ArrayList<String> outputQueue = new ArrayList<String>();
+ArrayList<String> evaluationStack = new ArrayList<String>();
+ArrayList<String> operatorStack = new ArrayList<String>();
+
 // Implementation of the shunting algorithm
 float shuntingAlgorithm(ArrayList<String> equation) {
-  boolean isNumber;
-  ArrayList<String> outputQueue = new ArrayList<String>();
-  ArrayList<String> evaluationStack = new ArrayList<String>();
-  ArrayList<String> operatorStack = new ArrayList<String>();
+  outputQueue = new ArrayList<String>();
+  evaluationStack = new ArrayList<String>();
+  operatorStack = new ArrayList<String>();
 
-  // Making a hashmap of operator priorities
-  HashMap<String, Integer> priorities = new HashMap<String, Integer>();
-  priorities.put("(", 0);
-  priorities.put("[", 0);
-  priorities.put("sin", 1);
-  priorities.put("cos", 1);
-  priorities.put("tan", 1);
-  priorities.put("sqrt", 1);
-  priorities.put("+", 1);
-  priorities.put("-", 1);
-  priorities.put("*", 2);
-  priorities.put("/", 2);
-  priorities.put("^", 3);
-  priorities.put(")", 4);
-  priorities.put("]", 4);
+  // Converting the equation to postfix, and evaluating the postfix expression
+  convertToPostfix(equation);
+  evaluatePostfixExpression();
+  
+  
+  // Try returning the value 
+  try {
+    return float(evaluationStack.get(0));
+  } 
+  
+  // If an error occurs, there is a problem with the inputted equation
+  catch (Exception e) {
+    println("Your equation is causing an error");
+    return 0;
+  }
+}
 
 
-  // Goes through each character in the equation
+// Convert the equation to postfix
+void convertToPostfix(ArrayList<String> equation) {
+  
+  // Goes through each character in the parsed equation
   for (int i = 0; i < equation.size(); i++) {
     String character = equation.get(i);
     
-    // If the character isnt just a blank space
+    // Removes blank spaces 
     if (!character.equals(" ")) {
 
-      // Try converting the character to an integer to check if it is an integer
-      isNumber = isNumber(character);
-
       // IF THE CHARACTER IS A NUMBER
-      if (isNumber) {
+      if (isNumber(character)) {
         int pos = i;
 
-        // If the next character is still a number or a decimal character, continue to the next character
+        // While the next character is still a number or a decimal character, continue to the next character
         while (isNumber(equation.get(pos)) || equation.get(pos).equals(".")) {
           pos++;
 
@@ -58,37 +62,34 @@ float shuntingAlgorithm(ArrayList<String> equation) {
       // IF THE CHARACTER IS PART OF A FUNCTION
       else if (character.equals("s") || character.equals("c") || character.equals("t")) {
         
-        //try {
-          // Sine function
-          if(character.equals("s") && equation.get(i+1).equals("i") && equation.get(i+2).equals("n")) {
-            operatorStack.add(0, "sin");
-            i += 2;
-          }
-          
-          // Tangent function
-          if(character.equals("t") && equation.get(i+1).equals("a") && equation.get(i+2).equals("n")) {
-            operatorStack.add(0, "tan");
-            i += 2;
-          }
-          
-          // Cosine function
-          if(character.equals("c") && equation.get(i+1).equals("o") && equation.get(i+2).equals("s")) {
-            operatorStack.add(0, "cos");
-            i += 2;
-          }
-          
-          // Square Root function
-          if(character.equals("s") && equation.get(i+1).equals("q") && equation.get(i+2).equals("r") && equation.get(i+3).equals("t")) {
-            operatorStack.add(0, "sqrt");
-            i += 3;
-          }
-        //} catch (Exception e) {}
+        // Sine function
+        if(character.equals("s") && equation.get(i+1).equals("i") && equation.get(i+2).equals("n")) {
+          operatorStack.add(0, "sin");
+          i += 2;
+        }
         
+        // Tangent function
+        else if(character.equals("t") && equation.get(i+1).equals("a") && equation.get(i+2).equals("n")) {
+          operatorStack.add(0, "tan");
+          i += 2;
+        }
+        
+        // Cosine function
+        else if(character.equals("c") && equation.get(i+1).equals("o") && equation.get(i+2).equals("s")) {
+          operatorStack.add(0, "cos");
+          i += 2;
+        }
+        
+        // Square Root function
+        else if(character.equals("s") && equation.get(i+1).equals("q") && equation.get(i+2).equals("r") && equation.get(i+3).equals("t")) {
+          operatorStack.add(0, "sqrt");
+          i += 3;
+        }        
       }
+
 
       // IF THE CHARACTER IS NOT A NUMBER OR FUNCTION
       else {
-        
         // The case where a negative symbol does not represent subtraction, but rather a negative number
         if (character == "-") {
         
@@ -158,7 +159,6 @@ float shuntingAlgorithm(ArrayList<String> equation) {
             outputQueue.add(operatorStack.get(0));
             operatorStack.remove(0);
 
-
             // Prevents a null pointer exception
             if (operatorStack.size() == 0) {
               break;
@@ -192,19 +192,19 @@ float shuntingAlgorithm(ArrayList<String> equation) {
   
   // If there are still characters left in the operatorStack array
   if (operatorStack.size() != 0) {
+    
     // Append them to the output array
     for (int i = 0; i < operatorStack.size()+1; i++) {
       outputQueue.add(operatorStack.get(0));
       operatorStack.remove(0);
     }
   }
-  //println("FINAL OUTPUT ARRAY", outputQueue);
-  //println("FINAL OPERATOR STACK", operatorStack);
+}
 
-  // Evaluating the postfix expression in the outputQueue Array
-  for (int i = 0; i < outputQueue.size(); i++) {
-    //println("OUTPUT", outputQueue);
-    
+
+// Evaluating the postfix expression in the outputQueue Array
+void evaluatePostfixExpression() {
+  for (int i = 0; i < outputQueue.size(); i++) {    
     String output = outputQueue.get(i);
 
     // If the output is a number or a function
@@ -212,7 +212,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
       evaluationStack.add(0, output);
     }
 
-    // If its an operator
+    // If the output is an operator
     else {
       
       // If theres only one item in the evaluationStack array, there must be a function evaluating the number
@@ -248,18 +248,29 @@ float shuntingAlgorithm(ArrayList<String> equation) {
         // Check what type of operation is being performed, and add the number back to the evaluation stack
         if (output.equals("+")) {
           evaluationStack.add(0, str(leftNumber + rightNumber));
-        } else if (output.equals("-")) {
+        } 
+        
+        else if (output.equals("-")) {
           evaluationStack.add(0, str(leftNumber - rightNumber));
-        } else if (output.equals("*")) {
+        } 
+        
+        else if (output.equals("*")) {
           evaluationStack.add(0, str(leftNumber * rightNumber));
-        } else if (output.equals("/")) {
+        } 
+        
+        else if (output.equals("/")) {
           evaluationStack.add(0, str(leftNumber / rightNumber));
-        } else if (output.equals("^")) {
+        } 
+        
+        else if (output.equals("^")) {
           evaluationStack.add(0, str(pow(leftNumber, rightNumber)));
-        } else if (output.equals("sin")) {
+        } 
+        
+        else if (output.equals("sin")) {
           evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(sin(rightNumber)));
         } 
+        
         else if (output.equals("cos")) {
           evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(cos(rightNumber)));
@@ -274,17 +285,7 @@ float shuntingAlgorithm(ArrayList<String> equation) {
           evaluationStack.add(0, str(leftNumber));
           evaluationStack.add(0, str(sqrt(rightNumber)));
         } 
-
       }
     }
   }
-  
-  //println("FINAL ANSWER", evaluationStack);
-  try {
-    return float(evaluationStack.get(0));
-  } catch (Exception e) {
-    println("Your equation is causing an error");
-    return 0;
-  }
-  
 }

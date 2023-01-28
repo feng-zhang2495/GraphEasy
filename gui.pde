@@ -115,28 +115,61 @@ public void submitButtonClicked(GButton source, GEvent event) { //_CODE_:submitB
   
 } //_CODE_:submitButton:933242:
 
+
+// DEMO 1
 public void demo1Clicked(GButton source, GEvent event) { //_CODE_:demo1:219283:
   println("demo1 - GButton >> GEvent." + event + " @ " + millis());
+  
+  // Sets the graph to the equation for demo1
+  resetGraph();
+  equation = demo_1;
+  graph = new Graph(equation);
+  updateGUIvalues();
 } //_CODE_:demo1:219283:
 
+
+// DEMO 2
 public void demo2Clicked(GButton source, GEvent event) { //_CODE_:demo2:483934:
   println("demo2 - GButton >> GEvent." + event + " @ " + millis());
+  
+  // Sets the graph to the equation for demo2
+  resetGraph();
+  equation = demo_2;
+  graph = new Graph(equation);
+  updateGUIvalues();
 } //_CODE_:demo2:483934:
 
+
+// DEMO 3
 public void demo3Clicked(GButton source, GEvent event) { //_CODE_:demo3:474741:
   println("demo3 - GButton >> GEvent." + event + " @ " + millis());
+  
+  // Sets the graph to the equation for demo3
+  resetGraph();
+  equation = demo_3;
+  graph = new Graph(equation);
+  updateGUIvalues();
 } //_CODE_:demo3:474741:
 
+
+// ZOOM IN
 public void zoomInButtonClicked(GButton source, GEvent event) { //_CODE_:zoomInButton:426427:
   println("zoomInButton - GButton >> GEvent." + event + " @ " + millis());
+  zoomIn();
 } //_CODE_:zoomInButton:426427:
 
+
+// ZOOM OUT
 public void zoomOutButtonClicked(GButton source, GEvent event) { //_CODE_:zoomOutButton:350300:
   println("zoomOutButton - GButton >> GEvent." + event + " @ " + millis());
+  zoomOut();
 } //_CODE_:zoomOutButton:350300:
 
+
+// RESET
 public void resetButtonClicked(GButton source, GEvent event) { //_CODE_:resetButton:681550:
   println("resetButton - GButton >> GEvent." + event + " @ " + millis());
+  resetGraph();
 } //_CODE_:resetButton:681550:
 
 

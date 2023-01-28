@@ -3,17 +3,19 @@ class Axis {
   float xAxisLength;
   float yAxisLength;
   float spacingXtick, spacingYtick;
-  float yAxisCoordinate, xAxisCoordinate;
+  float xCoordYAxis, yCoordXAxis;
   float textPosition;
+  
   
   // CONSTRUCTOR
   Axis() {
+    // Initializes all the fields 
     this.xAxisLength = xMax - xMin;
     this.yAxisLength = yMax - yMin;
     this.spacingXtick = width/(this.xAxisLength/xScale);
     this.spacingYtick = height/(this.yAxisLength/yScale);
-    this.yAxisCoordinate = abs(xMin)*this.spacingXtick/xScale;
-    this.xAxisCoordinate = abs(yMax)*this.spacingYtick/yScale;
+    this.xCoordYAxis = abs(xMin)*this.spacingXtick/xScale;
+    this.yCoordXAxis = abs(yMax)*this.spacingYtick/yScale;
   }
   
   // METHODS
@@ -21,74 +23,86 @@ class Axis {
   void updateValues() {
     this.xAxisLength = xMax - xMin;
     this.yAxisLength = yMax - yMin;
-    this.spacingXtick = width/(this.xAxisLength/xScale);
-    this.spacingYtick = height/(this.yAxisLength/yScale);
-    this.yAxisCoordinate = abs(xMin)*this.spacingXtick/xScale;
-    this.xAxisCoordinate = abs(yMax)*this.spacingYtick/yScale;
+    this.spacingXtick = width/(this.xAxisLength/xScale);   // How long one x tick is in terms of spacing
+    this.spacingYtick = height/(this.yAxisLength/yScale);  // How long one y tick is in terms of spacing
+    this.xCoordYAxis = abs(xMin)*this.spacingXtick/xScale; // The x-coordinate of where the y axis is
+    this.yCoordXAxis = abs(yMax)*this.spacingYtick/yScale; // The y-coordinate of where the x axis is
     
+    // If the origin (0,0) is off the screen, adjust the yCoordXAxis and xCoordYAxis variables
     if (yMin > 0) {
-      this.xAxisCoordinate = height-20;
+      this.yCoordXAxis = height-20;
     }
 
     if (yMax < 0) {
-      this.xAxisCoordinate = 5;
+      this.yCoordXAxis = 5;
     }
     
     if (xMin > 0) {
-      this.yAxisCoordinate = 7;
+      this.xCoordYAxis = 7;
     }
     
     if (xMax < 0) {
-      this.yAxisCoordinate = width-5;
+      this.xCoordYAxis = width-5;
     }
   }
   
   // Draws the coordinate axis 
   void drawAxis() {
+    
+    // Update the values of the variables used first
     updateValues();
     strokeWeight(2);
     stroke(255, 0, 0);
    
-    // X-axis
-    line(0, xAxisCoordinate, width, xAxisCoordinate); 
+    // Draws the X-axis
+    line(0, yCoordXAxis, width, yCoordXAxis); 
     fill(255, 0, 0);
     textAlign(RIGHT);
-    text("x", width-10, xAxisCoordinate-3);
+    text("x", width-10, yCoordXAxis-3);
     
-    // Y-axis
-    line(yAxisCoordinate, 0, yAxisCoordinate, height);
+    // Draws the Y-axis
+    line(xCoordYAxis, 0, xCoordYAxis, height);
     textAlign(UP);
-    text("y", yAxisCoordinate+3, 10);
+    text("y", xCoordYAxis+3, 10);
   
     noStroke();
     fill(0);
     
     
-    // DRAWS THE TICKS ON THE X-AXIS
+    // Draws the ticks
+    drawXAxisTicks();
+    drawYAxisTicks(); 
+  }
+  
+  
+  // DRAWS TICKS ON THE X AXIS
+  void drawXAxisTicks() {
     textAlign(CENTER, TOP);
     
-    // If the origin is included in the range of xMin to xMax
+    // If the origin is included in the range of xMin to xMax (on the screen)
     if (xMin < 0 && xMax > 0) {
+      
       // DRAWS TICKS TO THE RIGHT OF THE ORIGIN
       for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
-        rect(yAxisCoordinate + spacingXtick * i, xAxisCoordinate, 2.3, 5);
+        rect(xCoordYAxis + spacingXtick * i, yCoordXAxis, 2.3, 5);
         
-        // Prevents it from drawing 0
+        // Prevents it from drawing 0.0
         if(i != 0) {
-          text(str(xScale*i), yAxisCoordinate + spacingXtick * i, xAxisCoordinate);
+          text(str(xScale*i), xCoordYAxis + spacingXtick * i, yCoordXAxis);
         }
       }
       
       // DRAWS TICKS TO THE LEFT OF THE ORIGIN
       for(int i = 0; i < (xAxisLength / xScale + 1); i++) {
-        rect(yAxisCoordinate + spacingXtick * -i, xAxisCoordinate, 2.3, 5);
+        rect(xCoordYAxis + spacingXtick * -i, yCoordXAxis, 2.3, 5);
         
-        // Prevents it from drawing 0
+        // Prevents it from drawing 0.0
         if(i != 0) {
-          text(str(xScale * -i), yAxisCoordinate + spacingXtick * -i, xAxisCoordinate);
+          text(str(xScale * -i), xCoordYAxis + spacingXtick * -i, yCoordXAxis);
         }
       }
     }
+    
     
     // If the origin is not included in the range of xMin to xMax
     else {
@@ -96,34 +110,36 @@ class Axis {
       if(xMin > 0) {
         // DRAWS TICKS TO THE RIGHT OF THE Y AXIS
         for(int i = 0; i < (xAxisLength / xScale) + 1; i++) {
+          float xPositionOfTick = xCoordYAxis + (ceil(xMin/xScale) * xScale - xMin)/xScale * spacingXtick + spacingXtick*i;
+          rect(xPositionOfTick, yCoordXAxis, 2.3, 5);
           
-          float xPositionOfTick = yAxisCoordinate + (ceil(xMin/xScale) * xScale - xMin)/xScale * spacingXtick + spacingXtick*i;
-          rect(xPositionOfTick, xAxisCoordinate, 2.3, 5);
-          
-          // Prevents it from drawing 0
+          // Prevents it from drawing 0.0
           if(ceil(xMin/xScale) != 0) {
-            text(str(ceil(xMin/xScale) * xScale + xScale * i), xPositionOfTick, xAxisCoordinate);
+            text(str(ceil(xMin/xScale) * xScale + xScale * i), xPositionOfTick, yCoordXAxis);
           }
         }
       }
       
-      if(xMax < 0) {
+      else if(xMax < 0) {
         // DRAWS TICKS TO THE LEFT OF THE Y AXIS
         for(int i = 0; i < (xAxisLength / xScale) + 1; i++) {   
+          float xPositionOfTick = xCoordYAxis - (ceil(abs(xMax)/xScale) * xScale - abs(xMax))/xScale * spacingXtick + spacingXtick*-i;
+          rect(xPositionOfTick, yCoordXAxis, 2.3, 5);
           
-          float xPositionOfTick = yAxisCoordinate - (ceil(abs(xMax)/xScale) * xScale - abs(xMax))/xScale * spacingXtick + spacingXtick*-i;
-          rect(xPositionOfTick, xAxisCoordinate, 2.3, 5);
-          
-          // Prevents it from drawing 0
+          // Prevents it from drawing 0.0
           if(floor(xMax/xScale) != 0) {
-            text(str(floor(xMax/xScale) * xScale + xScale * -i), xPositionOfTick, xAxisCoordinate);
+            text(str(floor(xMax/xScale) * xScale + xScale * -i), xPositionOfTick, yCoordXAxis);
           }
         }
       }
     }
+  }
+  
+  
+  // DRAWS THE TICKS ON THE Y-AXIS 
+  void drawYAxisTicks() {
     
-    
-    // DRAWS THE TICKS ON THE Y-AXIS 
+    // Adjusting the text align based on where the axis is
     if(xMax > 0) {
       this.textPosition = 10;
       textAlign(TOP, CENTER);
@@ -134,50 +150,52 @@ class Axis {
       textAlign(RIGHT, CENTER);
     }
     
-    // If the origin is included in the range of yMin and yMax
+    // If the origin is included in the range of yMin and yMax (included on screen)
     if (yMin < 0 && yMax > 0) {
+      
       // DRAWS TICKS ABOVE THE ORIGIN
       for(int i = 0; i < (yAxisLength / yScale + 1); i++) {
-        rect(yAxisCoordinate, xAxisCoordinate + spacingYtick*-i, 5, 2.3);
+        rect(xCoordYAxis, yCoordXAxis + spacingYtick*-i, 5, 2.3);
         
-        // Prevents it from drawing 0 twice
-        if(yScale * -i != 0) {
-          text(str(yScale * i), yAxisCoordinate + textPosition, xAxisCoordinate + spacingYtick*-i);
+        // Prevents it from drawing 0.0
+        if(i != 0) {
+          text(str(yScale * i), xCoordYAxis + textPosition, yCoordXAxis + spacingYtick*-i);
         }
       }
       
       // DRAWS TICKS BELOW THE ORIGIN
       for(int i = 0; i < (yAxisLength / yScale + 1); i++) {
-        rect(yAxisCoordinate, xAxisCoordinate + spacingYtick*i, 5, 2.3);
+        rect(xCoordYAxis, yCoordXAxis + spacingYtick*i, 5, 2.3);
         
-        // Prevents it from drawing 0
-        if(yScale * i != 0) {
-          text(str(yScale * -i), yAxisCoordinate + textPosition, xAxisCoordinate + spacingYtick*i);
+        // Prevents it from drawing 0.0
+        if(i != 0) {
+          text(str(yScale * -i), xCoordYAxis + textPosition, yCoordXAxis + spacingYtick*i);
         }
       }
     }
     
     // If the origin is not included in the range of yMin to yMax
     else {
+      
+      // DRAWS TICKS ABOVE THE X AXIS 
       if (yMin > 0) {
-        // DRAWS TICKS ABOVE THE X AXIS 
         for(int i = 0; i < (yAxisLength / yScale) + 1; i++) {
             
-          float yPositionOfTick = xAxisCoordinate - (ceil(yMin/yScale) * yScale - yMin)/yScale * spacingYtick - spacingYtick*i;
-          rect(yAxisCoordinate, yPositionOfTick, 5, 2.3);
-          text(str(ceil(yMin/yScale)*yScale + yScale * (i)), yAxisCoordinate + textPosition, yPositionOfTick);
+          float yPositionOfTick = yCoordXAxis - (ceil(yMin/yScale) * yScale - yMin)/yScale * spacingYtick - spacingYtick*i;
+          rect(xCoordYAxis, yPositionOfTick, 5, 2.3);
+          text(str(ceil(yMin/yScale)*yScale + yScale * (i)), xCoordYAxis + textPosition, yPositionOfTick);
         }
       }
       
+      // DRAWS TICKS BELOW THE X AXIS 
       else if (yMax < 0) {
-        // DRAWS TICKS BELOW THE X AXIS 
         for(int i = 0; i < (yAxisLength / yScale) + 1; i++) {
           
-          float yPositionOfTick = xAxisCoordinate - (floor(yMax/yScale) * yScale - yMax)/yScale * spacingYtick + spacingYtick*i;
-          rect(yAxisCoordinate, yPositionOfTick, 5, 2.3);
-          text(str(floor(yMax/yScale) * yScale - yScale * (i)), yAxisCoordinate + textPosition, yPositionOfTick);
+          float yPositionOfTick = yCoordXAxis - (floor(yMax/yScale) * yScale - yMax)/yScale * spacingYtick + spacingYtick*i;
+          rect(xCoordYAxis, yPositionOfTick, 5, 2.3);
+          text(str(floor(yMax/yScale) * yScale - yScale * (i)), xCoordYAxis + textPosition, yPositionOfTick);
         }
       }
-    }  
+    } 
   }
 }

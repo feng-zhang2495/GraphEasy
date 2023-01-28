@@ -11,19 +11,6 @@ boolean isNumber(String c) {
 }
 
 
-// Rounds float numbers 
-float roundFloat(float n, int decimalPlaces) {
-    n = abs(n);
-    
-    // Determine the number of decimal places in the input number
-    int decimalCount = (int)(n * pow(10, decimalPlaces)) % (int)pow(10, decimalPlaces);
-    
-    // Round the number to the desired number of decimal places
-    n = (float)((int)(n * pow(10, decimalPlaces + decimalCount)) / pow(10, decimalCount));
-    return n;
-}
-
-
 // Updates the adjustmentx and adjustmenty variables which are responsible for shifting the origin point of the coordinate axis
 // This makes sure that points are drawn on the right places on screen
 void updateAdjustment() {
@@ -55,13 +42,6 @@ void updateAdjustment() {
   }
 }
 
-
-// Converts a point from the scale of the window to the scale of coordinate axis
-//void convertPoint(float point) {
-//  return point * coordinateAxis.spacingXtick / xScale;
-//}
-
-
 // Updates the values on the GUI
 void updateGUIvalues() {
   
@@ -77,12 +57,15 @@ void updateGUIvalues() {
       yMinField.setText(str(yMin));
       yMaxField.setText(str(yMax));
       
+      // Sets the xScale and yScale variables
       xScaleField.setText(str(xScale));
       yScaleField.setText(str(yScale));
+      
+      // Sets the equation
+      equationField.setText(equation);
     } 
     
     catch (Exception e) {
-      //println(e);
     }
 
     updatingValues = false;
@@ -92,6 +75,7 @@ void updateGUIvalues() {
 
 // Updates the text size and colors on the GUI
 void setSettingsForGUI() {
+  
   // SETS THE TEXT SIZE AND COLORS FOR THE TITLE
   titleLabel.setFont(titleFont);
   titleLabel.setLocalColorScheme(2);
@@ -134,4 +118,20 @@ void setSettingsForGUI() {
   // SETS THE TEXT SIZE AND COLORS FOR THE SETTINGS LABEL
   settingsLabel.setFont(titleFont);
   settingsLabel.setLocalColorScheme(6);
+}
+
+
+// Resets the graph to default settings
+void resetGraph() {
+  xMax = 5;
+  xMin = -5;
+  yMax = 5;
+  yMin = -5;
+  xScale = 1;
+  yScale = 1;
+  
+  equation = "";
+  graph = new Graph(equation);
+  
+  updateGUIvalues();
 }
